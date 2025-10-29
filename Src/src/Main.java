@@ -3,6 +3,7 @@ import services.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class Main {
     private static GerenciadorUsuarios gerenciadorUsuarios = new GerenciadorUsuarios();
@@ -13,8 +14,7 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("=== BEM-VINDO AO NOSSO CANTO ===");
-
-       // cadastrarExemplos();
+        cadastrarExemplos();
 
         while (true) {
             if (usuarioIsLogado == null) {
@@ -42,6 +42,7 @@ public class Main {
 
         gerenciadorUsuarios.cadastrarUsuario(senior);
         gerenciadorUsuarios.cadastrarUsuario(estudante);
+        System.out.println("Usuarios de exemplo, cadastrados.");
     }
 
     private static void exibirMainMenu() {
@@ -86,8 +87,8 @@ public class Main {
         System.out.println("2. Agendar Consulta");
         System.out.println("3. Minhas Consultas");
         System.out.println("4. Chat com Estudantes");
-        System.out.println("5. Chat com outro Senior");
-        System.out.println("6. Ver perfil");
+        System.out.println("5. Chat com outro Senior (Companhia)");
+        System.out.println("6. Ver meu perfil");
         System.out.println("7. Sair da conta");
         System.out.print("Escolha -> ");
 
@@ -97,9 +98,9 @@ public class Main {
         switch (op) {
             case 1 -> buscarEstudantes();
             case 2 -> agendarConsulta();
-            case 3 -> minhasConsultas();
-            case 4 -> chatEstudantes();
-            case 5 -> chatSeniors();
+            case 3 -> minhasConsultasSenior();
+            case 4 -> chatComEstudantes();
+            case 5 -> chatComSeniors();
             case 6 -> usuarioIsLogado.exibirPerfil();
             case 7 -> usuarioIsLogado = null;
             default -> System.out.println("Opção invalida :/");
@@ -120,8 +121,8 @@ public class Main {
 
         switch (op) {
             case 1 -> buscarSenior();
-            case 2 -> minhasConsultas();
-            case 3 -> chatSeniors();
+            case 2 -> minhasConsultasEstudante();
+            case 3 -> chatComSeniors();
             case 4 -> usuarioIsLogado.exibirPerfil();
             case 5 -> usuarioIsLogado = null;
             default -> System.out.println("Opação invalida :/");
@@ -132,56 +133,286 @@ public class Main {
         gerenciadorUsuarios.listarUsuarios();
         System.out.println("\n=== LOGIN ===");
         System.out.print("Email: ");
-        String email = input.nextLine();
+        String email = input.nextLine().trim();
         System.out.print("Senha: ");
-        String senha = input.nextLine();
+        String senha = input.nextLine().trim();
 
         var usuario = gerenciadorUsuarios.fazerLogin(email, senha); //Var é varivael temporaria
         if (usuario.isPresent()) {
             usuarioIsLogado = usuario.get();
             System.out.println("Login realizado com sucesso!");
+            System.out.println("Bem vindo: "+usuarioIsLogado.getNome()+" !");
         } else {
             System.out.println("Email ou senha invalidos");
         }
     }
 
-    public static void cadastrarSenior() { //fazer aqui, precisa cadastrar infos além de email e senha
+    public static void cadastrarSenior() { //Cadastro completo p Senior
         System.out.println("\n=== CADASTRAR SENIOR ===");
-        System.out.println("Ainda em desenvolvimento...");
+
+        String id = "S" + (gerenciadorUsuarios.listarSeniores().size() + 1);
+
+        System.out.print("Nome Completo: ");
+        String nome = input.nextLine();
+
+        System.out.print("Email: "); //aqui tambem p precisar estar certo o email "pelo menos @algo kkkk"
+        String email = input.nextLine();
+
+        System.out.print("Senha: "); //da pra polir aq tbm
+        String senha = input.nextLine();
+
+        System.out.print("Telefone: ");
+        String telefone = input.nextLine();
+
+        System.out.println("Data de nascimento (AAAA-MM-DD): ");
+        LocalDate dataNascimento = LocalDate.parse(input.nextLine());
+
+        System.out.print("Cpf: ");
+        String cpf = input.nextLine();
+        while (cpf.length() != 11) { //valida cpf
+            System.out.println("CPF invalido. Tente novamente!");
+            System.out.print("CPF: ");
+            cpf = input.nextLine();
+        }
+
+        System.out.println("Endereco: ");
+        String endereco = input.nextLine();
+
+        System.out.println("Contato de Emergencia: ");
+        String contato = input.nextLine();
+
+        System.out.println("Tem acompanhante (sim / não) - ");
+        String resposta = input.nextLine().toLowerCase(); //valida resposta, pro usuario n ter que digitar true/false
+        boolean temAcompanhante = resposta.equals("sim") || resposta.equals("s") || resposta.equals("si");
+        //coloca true caso for "sim" , "s" ou "si".. Caso contrario, vira false.
+
+        Senior senior = new Senior(id, nome, email, senha, telefone, dataNascimento, cpf,
+                endereco, contato, temAcompanhante);
+
+        gerenciadorUsuarios.cadastrarUsuario(senior);
+        System.out.println("Senior cadastrado com sucesso!");
+
+        //ADICIONAR REMEDIOS E CONDIÇÃO DE SAÚDE COMO METODO NO MENU SENIOR, AQUI NO CADASTRO NÃO!!!!!! ----- LEMBRAR!!
     }
 
     public static void cadastrarEstudante() { //fazer aqui, precisa cadastrar infos além de email e senha
         System.out.println("\n=== CADASTRAR ESTUDANTE ===");
-        System.out.println("Ainda em desenvolvimento...");
+
+        String id = "E" + (gerenciadorUsuarios.listarEstudantes().size() + 1);
+
+        System.out.print("Nome Completo: ");
+        String nome = input.nextLine();
+
+        System.out.print("Email: ");
+        String email = input.nextLine();
+
+        System.out.print("Senha: ");
+        String senha = input.nextLine();
+
+        System.out.print("Telefone: ");
+        String telefone = input.nextLine();
+
+        System.out.print("Data de nascimento (AAAA-MM-DD): ");
+        LocalDate dataNascimento = LocalDate.parse(input.nextLine());
+
+        System.out.print("Cpf: ");
+        String cpf = input.nextLine();
+        while (cpf.length() != 11) { //valida cpf
+            System.out.println("CPF invalido. Tente novamente!");
+            System.out.print("CPF: ");
+            cpf = input.nextLine();
+        }
+
+        System.out.print("Endereco: ");
+        String endereco = input.nextLine();
+
+        System.out.print("Instituição estudantil: ");
+        String instituicao = input.nextLine();
+
+        System.out.print("Curso: ");
+        String curso = input.nextLine();
+
+        System.out.println("Periodo: ");
+        int semestre = Integer.parseInt(input.nextLine());
+        input.nextLine();
+
+        boolean disponivel = false;
+
+        Estudante estudante = new Estudante(id, nome, email, senha, telefone, dataNascimento, cpf,
+                endereco, instituicao, curso, semestre, disponivel);
+
+        gerenciadorUsuarios.cadastrarUsuario(estudante);
+        System.out.println("Estudante cadastrado com sucesso!");
+
+        //Lembrar de colocar no Menu ESTUDANTE, ficar disponivel!!! Também cadastro de especialidades como metodo
     }
 
-    private static void buscarEstudantes() {
+    private static void buscarEstudantes() { //ATUALIZEI
         System.out.println("\n=== ESTUDANTES DISPONIVEIS ===");
-        gerenciadorUsuarios.listarEstudantes().forEach(Estudante::exibirPerfil);
+        var estudantes = gerenciadorUsuarios.listarEstudantes().stream()
+                .filter(Estudante::isDisponivel)
+                .toList();
+
+        if (estudantes.isEmpty()) {
+            System.out.println("Nenhum estudante encontrado");
+        } else {
+            estudantes.forEach(Estudante::exibirPerfil);
+        }
     }
 
     private static void buscarSenior() {
         System.out.println("\n=== SERNIORS DISPONIVEIS ===");
-        gerenciadorUsuarios.listarSeniores().forEach(Senior::exibirPerfil);
-    }
+        var seniors = gerenciadorUsuarios.listarSeniores();
+
+        if (seniors.isEmpty()) {
+            System.out.println("Nenhum senior encontrado");
+        } else {
+            seniors.forEach(Senior::exibirPerfil);
+        }
+    } //
 
     private static void agendarConsulta() {
-        // Implementar agendamento
-        System.out.println("Funcionalidade de agendamento em desenvolvimento...");
+        System.out.println("\n=== AGENDAR CONSULTA ===");
+
+        var estudantesDiponiveis = gerenciadorUsuarios.listarEstudantes().stream()
+                .filter(Estudante::isDisponivel)
+                .toList();
+
+        if(estudantesDiponiveis.isEmpty()) {
+            System.out.println("Nenhum estudante disponivel para agendamento ");
+            return;
+        }
+
+        estudantesDiponiveis.forEach(Estudante::exibirPerfil);
+
+        System.out.println("ID do estudante: ");
+        String estudanteId = input.nextLine();
+
+        var estudanteOpt = gerenciadorUsuarios.buscarPorId(estudanteId);
+        if(estudanteOpt.isEmpty() || !(estudanteOpt.get() instanceof Estudante)) {
+            System.out.println("Estudante não encotrado");
+            return;
+        }
+
+        Estudante estudante = (Estudante) estudanteOpt.get();
+
+        if(!estudante.isDisponivel()) {
+            System.out.println("Este estudante não está disponivel no momento");
+            return;
+        }
+
+        System.out.print("Data e Hora (AAAA-MM-DDTHH:MM): ");
+        LocalDateTime dataHora = LocalDateTime.parse(input.nextLine());
+
+        System.out.print("Tipo da consulta: ");
+        String tipoConsulta = input.nextLine();
+
+        String consultaId = "C" + System.currentTimeMillis();
+        Consulta consulta = gerenciadorCunsulta.agendarConsulta(consultaId,
+                (Senior) usuarioIsLogado, estudante, dataHora, tipoConsulta);
+
+        System.out.println("Consulta agendada com sucesso!");
+        consulta.exibirDetalhes();
+    } //Atualizei
+
+    private static void minhasConsultasSenior() {
+        System.out.println("\n=== MINHAS CONSULTAS ===");
+        var consultas = gerenciadorCunsulta.getConsultarSenior(usuarioIsLogado.getId());
+
+        if (consultas.isEmpty()) {
+            System.out.println("Nenhum consulta encontrado");
+        } else {
+            consultas.forEach(Consulta::exibirDetalhes);
+        }
     }
 
-    private static void minhasConsultas() {
-        // Implementar listagem de consultas
-        System.out.println("Funcionalidade de consultas em desenvolvimento...");
+    private static void minhasConsultasEstudante() {
+        System.out.println("\n=== MINHAS CONSULTAS ===");
+        var consultas = gerenciadorCunsulta.getConsultarEstudante(usuarioIsLogado.getId());
+
+        if (consultas.isEmpty()) {
+            System.out.println("Nenhum consulta encontrado");
+        } else {
+            consultas.forEach(Consulta::exibirDetalhes);
+        }
     }
 
-    private static void chatEstudantes() {
-        // Implementar chat
-        System.out.println("Funcionalidade de chat em desenvolvimento...");
-    }
+    private static void chatComEstudantes() {
+        System.out.println("\n=== CHAT ESTUDANTES ===");
+        var estudantes = gerenciadorUsuarios.listarEstudantes();
 
-    private static void chatSeniors() {
-        // Implementar chat entre seniors
-        System.out.println("Funcionalidade de chat entre seniors em desenvolvimento...");
+        if (estudantes.isEmpty()) {
+            System.out.println("Nenhum estudante encontrado");
+            return;
+        }
+
+        estudantes.forEach(Estudante::exibirPerfil);
+
+        System.out.println("ID do estudante para conversa:");
+        String estudanteId = input.nextLine();
+
+        var estudanteOpt = gerenciadorUsuarios.buscarPorId(estudanteId);
+        if (estudanteOpt.isEmpty() || !(estudanteOpt.get() instanceof Estudante)) {
+            System.out.println("Estudante não encotrado");
+            return;
+        }
+
+        Estudante estudante = (Estudante) estudanteOpt.get();
+        iniciarChat(estudante, " Estudante");
+    } //precisa de mudanças (seus devidos chats no devidos menus)
+
+    private static void chatComSeniors() {
+        System.out.println("=== CHAT SENIORS ===");
+        var seniors = gerenciadorUsuarios.listarSeniores().stream()
+                .filter(s -> s.getId().equals(usuarioIsLogado.getId()))
+                .toList();
+
+        if (seniors.isEmpty()) {
+            System.out.println("Nenhum senior encontrado");
+            return;
+        }
+
+        seniors.forEach(Usuario::exibirPerfil);
+
+        System.out.println("ID do senior para conversa:");
+        String seniorId = input.nextLine();
+
+        var seniorOpt = gerenciadorUsuarios.buscarPorId(seniorId);
+        if (seniorOpt.isEmpty() || !(seniorOpt.get() instanceof Senior)) {
+            System.out.println("Senior não encontrado");
+            return;
+        }
+
+        Senior senior = (Senior) seniorOpt.get();
+        iniciarChat(senior, "Senior");
+    } //precisa polir tambem
+
+    private static void iniciarChat(Usuario destinatario, String tipoDestinatario) {
+        System.out.println("\n=== CHAT com " + destinatario.getNome() + " (" + tipoDestinatario + ") ===");
+        System.out.println("Digite 'sair1' para encerrar o chat");
+
+        // Carregar histórico
+        var historico = gerenciadorMsg.getChat(usuarioIsLogado.getId(), destinatario.getId());
+        if (!historico.isEmpty()) {
+            System.out.println("\n--- Histórico de Mensagens ---");
+            historico.forEach(Mensagem::exibirTexto);
+            System.out.println("------------\n");
+        } else {
+            System.out.println("Nenhuma mensagem anterior. Inicie a conversa!\n");
+        }
+
+        while (true) {
+            System.out.print(usuarioIsLogado.getNome() + ": ");
+            String texto = input.nextLine();
+
+            if (texto.equalsIgnoreCase("sair1")) break;
+            if (texto.trim().isEmpty()) continue;
+
+            String mensagemId = "MSG" + System.currentTimeMillis();
+            gerenciadorMsg.enviarMensagem(mensagemId, usuarioIsLogado, destinatario, texto);
+            System.out.println("✓ Mensagem enviada");
+        }
+
+        System.out.println("Chat encerrado.");
     }
 }
