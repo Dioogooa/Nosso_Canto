@@ -1,13 +1,13 @@
 package entites;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Mensagem {
     private String id;
     private Usuario remetente;
     private Usuario destinatario;
     private String texto;
-    private LocalDate dataHora;
+    private LocalDateTime dataHora;
     private boolean visto;
 
     public Mensagem(String id, Usuario remetente, Usuario destinatario, String texto) {
@@ -15,7 +15,7 @@ public class Mensagem {
         this.remetente = remetente;
         this.destinatario = destinatario;
         this.texto = texto;
-        this.dataHora = LocalDate.now();
+        this.dataHora = LocalDateTime.now();
         this.visto = false;
     }
 
@@ -32,7 +32,7 @@ public class Mensagem {
     public Usuario getRemetente() {return remetente;}
     public Usuario getDestinatario() {return destinatario;}
     public String getTexto() {return texto;}
-    public LocalDate getDataHora() {return dataHora;}
+    public LocalDateTime getDataHora() {return dataHora;}
     public boolean isVisto() {return visto;}
 
 }
