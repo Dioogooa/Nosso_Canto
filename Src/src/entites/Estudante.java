@@ -24,7 +24,7 @@ public class Estudante extends Usuario {
 
     @Override
     public void exibirPerfil() {
-        System.out.println("=== Perfil do Estudante ===");
+        System.out.println("\n=== Perfil do Estudante ===");
         System.out.println("Nome: " + nome);
         System.out.println("Curso: " + curso);
         System.out.println("Instituição: " + instuicao);

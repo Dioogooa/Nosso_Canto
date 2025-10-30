@@ -29,15 +29,15 @@ public class Main {
 
     private static void cadastrarExemplos() {
         //Exemplo p senior
-        Senior senior = new Senior("S1", "Antônio Fagundes", "antonio1955@gmail.com", "1995Anto@",
+        Senior senior = new Senior("S1", "Antônio Fagundes", "ser@", "Sen123",
                 "(62)98165-9834", LocalDate.of(1955, 2, 18), "901.785.901-31",
                 "Rua A, 900, Jardim Luz", "(72)95678-3190", false);
         senior.addCondicaoSaude("Alzheimer ");
         senior.addMedicamento("Kisunla (donanemabe)");
         senior.addMedicamento("Óleo de canabidiol");
 
-        Estudante estudante = new Estudante("E1", "Pedro Santiago", "pedrinho2003@gmail.com",
-                "ppTrem109040@", "(21)98990-1254", LocalDate.of(2003, 9, 19),
+        Estudante estudante = new Estudante("E1", "Pedro Santiago", "est@",
+                "est123", "(21)98990-1254", LocalDate.of(2003, 9, 19),
                 "900-800-700-65", "Rua flamengo, 177, Flamengo", "UFRJ", "Psicologia",
                 7, true);
         estudante.adcEspecialidade("Psicologo humanista");
@@ -72,7 +72,6 @@ public class Main {
     }
 
     private static void exibirMenuUsuario() {
-        System.out.println("Bem vindo: "+usuarioIsLogado.getNome()+" !");
 
         if (usuarioIsLogado instanceof Senior) {
             exibirMenuSenior();
@@ -91,8 +90,8 @@ public class Main {
         System.out.println("4. Chat com Estudantes");
         System.out.println("5. Gerenciar Condição de Saúde");
         System.out.println("6. Gerenciar Medicamentos");
-        System.out.println("6. Ver meu perfil");
-        System.out.println("7. Sair da conta");
+        System.out.println("7. Ver meu perfil");
+        System.out.println("8. Sair da conta");
         System.out.print("Escolha -> ");
 
         int op = input.nextInt();
@@ -138,7 +137,7 @@ public class Main {
     }
 
     private static void fazerLogin() {
-        gerenciadorUsuarios.listarUsuarios();
+
         System.out.println("\n=== LOGIN ===");
         System.out.print("Email: ");
         String email = input.nextLine().trim();
@@ -148,7 +147,8 @@ public class Main {
         var usuario = gerenciadorUsuarios.fazerLogin(email, senha); //Var é varivael temporaria
         if (usuario.isPresent()) {
             usuarioIsLogado = usuario.get();
-            System.out.println("Login realizado com sucesso!");
+            limparTela();
+            System.out.println("\nLogin realizado com sucesso!");
             System.out.println("Bem vindo: "+usuarioIsLogado.getNome()+" !");
         } else {
             System.out.println("Email ou senha invalidos");
@@ -242,7 +242,6 @@ public class Main {
 
         System.out.println("Periodo: ");
         int semestre = Integer.parseInt(input.nextLine());
-        input.nextLine();
 
         boolean disponivel = false;
 
@@ -269,7 +268,9 @@ public class Main {
     }
 
     private static void buscarSenior() {
-        System.out.println("\n=== SERNIORS DISPONIVEIS ===");
+
+        limparTela();
+        System.out.println("\n=== SENIORES DISPONIVEIS ===");
         var seniors = gerenciadorUsuarios.listarSeniores();
 
         if (seniors.isEmpty()) {
@@ -353,20 +354,21 @@ public class Main {
         System.out.println("1. Adicionar Especialidade");
         System.out.println("2. Remover Especialidade");
         System.out.println("3. Voltar");
-        System.out.println("Escolha: ");
+        System.out.print("Escolha: ");
 
         int op = input.nextInt();
         input.nextLine();
+        limparTela();
 
         switch (op) {
             case 1 -> {
-                System.out.println("Nova Especialidade: ");
+                System.out.print("Nova Especialidade: ");
                 String especialidade = input.nextLine();
                 estudante.adcEspecialidade(especialidade);
                 System.out.println("Especialidade adicionada com sucesso!");
             }
             case 2 -> {
-                System.out.println("Especialidade a remover: ");
+                System.out.print("Especialidade a remover: ");
                 String especialidade = input.nextLine();
                 estudante.getEspecialidades().remove(especialidade);
                 System.out.println("Especialidade removida com sucesso");
@@ -379,18 +381,21 @@ public class Main {
     private static void atualizarDisponibilidade() {
         Estudante estudante = (Estudante) usuarioIsLogado;
 
+        System.out.println("\n=== ATUALIZAR DISPONIBILIDADE ===");
         System.out.println("Sua disponibilidade atual: "+(estudante.isDisponivel() ? "SIM" : "NÃO"));
 
         System.out.println("1. Mudar disponibilidade");
         System.out.println("2. Voltar");
+        System.out.print("Escolha -> ");
         int op = input.nextInt();
         input.nextLine();
 
-        while (op != 1 || op != 2) {
+        while (op < 1 || op > 2) {
             System.out.println("Opção invalida");
             System.out.println("1. Ficar disponivel");
             System.out.println("2. Ficar indiponivel");
             System.out.println("3. Voltar");
+            System.out.println("Escolha: ");
             op = input.nextInt();
             input.nextLine();
 
@@ -460,7 +465,7 @@ public class Main {
         var consultas = gerenciadorCunsulta.getConsultarSenior(usuarioIsLogado.getId());
 
         if (consultas.isEmpty()) {
-            System.out.println("Nenhum consulta encontrado");
+            System.out.println("Nenhuma consulta encontrada!");
         } else {
             consultas.forEach(Consulta::exibirDetalhes);
         }
@@ -471,7 +476,7 @@ public class Main {
         var consultas = gerenciadorCunsulta.getConsultarEstudante(usuarioIsLogado.getId());
 
         if (consultas.isEmpty()) {
-            System.out.println("Nenhum consulta encontrado");
+            System.out.println("Nenhuma consulta encontrada!");
         } else {
             consultas.forEach(Consulta::exibirDetalhes);
         }
@@ -502,9 +507,11 @@ public class Main {
     } //precisa de mudanças (seus devidos chats no devidos menus)
 
     private static void chatComSeniors() {
-        System.out.println("=== CHAT SENIORS ===");
+
+        limparTela();
+        System.out.println("\n=== CHAT SENIORS ===");
         var seniors = gerenciadorUsuarios.listarSeniores().stream()
-                .filter(s -> s.getId().equals(usuarioIsLogado.getId()))
+                .filter(s -> !s.getId().equals(usuarioIsLogado.getId()))
                 .toList();
 
         if (seniors.isEmpty()) {
@@ -512,10 +519,15 @@ public class Main {
             return;
         }
 
-        seniors.forEach(Usuario::exibirPerfil);
+        seniors.forEach(Senior::exibirPerfil);
 
-        System.out.println("ID do senior para conversa:");
+        System.out.println(" '1' para listar seniores!");
+        System.out.print("ID do senior para conversa: ");
         String seniorId = input.nextLine();
+
+        if (seniorId.equals("1")) { //testar se sai
+            gerenciadorUsuarios.listarSeniores();
+        }
 
         var seniorOpt = gerenciadorUsuarios.buscarPorId(seniorId);
         if (seniorOpt.isEmpty() || !(seniorOpt.get() instanceof Senior)) {
@@ -554,5 +566,23 @@ public class Main {
         }
 
         System.out.println("Chat encerrado.");
+        limparTela();
+    }
+
+    public static void limparTela() {
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+
+            if (os.contains("win")) {
+                // Windows
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                // Linux, macOS, Unix
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
