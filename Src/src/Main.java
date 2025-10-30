@@ -1,5 +1,7 @@
 import entites.*;
 import services.*;
+
+import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Scanner;
@@ -87,7 +89,8 @@ public class Main {
         System.out.println("2. Agendar Consulta");
         System.out.println("3. Minhas Consultas");
         System.out.println("4. Chat com Estudantes");
-        System.out.println("5. Chat com outro Senior (Companhia)");
+        System.out.println("5. Gerenciar Condição de Saúde");
+        System.out.println("6. Gerenciar Medicamentos");
         System.out.println("6. Ver meu perfil");
         System.out.println("7. Sair da conta");
         System.out.print("Escolha -> ");
@@ -100,9 +103,10 @@ public class Main {
             case 2 -> agendarConsulta();
             case 3 -> minhasConsultasSenior();
             case 4 -> chatComEstudantes();
-            case 5 -> chatComSeniors();
-            case 6 -> usuarioIsLogado.exibirPerfil();
-            case 7 -> usuarioIsLogado = null;
+            case 5 -> gerenciarCondicoesSaude();
+            case 6 -> gerenciarMedicamentos();
+            case 7 -> usuarioIsLogado.exibirPerfil();
+            case 8 -> usuarioIsLogado = null;
             default -> System.out.println("Opção invalida :/");
         }
     }
@@ -112,8 +116,10 @@ public class Main {
         System.out.println("1. Buscar Seniors");
         System.out.println("2. Minhas consultas");
         System.out.println("3. Chat com Seniors");
-        System.out.println("4. Ver Perfil");
-        System.out.println("5. Sair da conta");
+        System.out.println("4. Gerenciar minhas especialidades");
+        System.out.println("5. Atualizar disponibilidade");
+        System.out.println("6. Ver Perfil");
+        System.out.println("7. Sair da conta");
         System.out.print("Escolha -> ");
 
         int op = input.nextInt();
@@ -123,8 +129,10 @@ public class Main {
             case 1 -> buscarSenior();
             case 2 -> minhasConsultasEstudante();
             case 3 -> chatComSeniors();
-            case 4 -> usuarioIsLogado.exibirPerfil();
-            case 5 -> usuarioIsLogado = null;
+            case 4 -> gerenciarEspecialidade();
+            case 5 -> atualizarDisponibilidade();
+            case 6 -> usuarioIsLogado.exibirPerfil();
+            case 7 -> usuarioIsLogado = null;
             default -> System.out.println("Opação invalida :/");
         }
     }
@@ -270,6 +278,138 @@ public class Main {
             seniors.forEach(Senior::exibirPerfil);
         }
     } //
+
+    private static void gerenciarCondicoesSaude() {
+        Senior senior = (Senior) usuarioIsLogado;
+
+        System.out.println("\n=== GERENCIAR CONDIÇÕES DE SAÚDE ==="); //aqui teria que ser um vetor..
+        System.out.println("Suas condições atuais: "+senior.getCondicaoSaude());
+
+        System.out.println("1. Adicionar condição");
+        System.out.println("2. Remover condição");
+        System.out.println("3. Voltar");
+        System.out.println("Escolha: ");
+
+        int op = input.nextInt();
+        input.nextLine();
+
+        switch (op) {
+            case 1 -> {
+                System.out.println("Nova Condição de saúde: ");
+                String condicao = input.nextLine();
+                senior.addCondicaoSaude(condicao);
+                System.out.println("Condição adicionada com sucesso!");
+            }
+            case 2 -> {
+                System.out.println("Condição a remover: ");
+                String condicao = input.nextLine();
+                senior.getCondicaoSaude().remove(condicao);
+                System.out.println("Condição removida com sucesso");
+            }
+            case 3 -> {return;}
+            default -> System.out.println("Opção invalida");
+        }
+    }
+
+    private static void gerenciarMedicamentos() {
+        Senior senior = (Senior) usuarioIsLogado;
+
+        System.out.println("\n=== GERENCIAR MEDICAMENTOS ==="); //aqui teria que ser um vetor..
+        System.out.println("Suas condições atuais: "+senior.getMedicamentos());
+
+        System.out.println("1. Adicionar Medicamento");
+        System.out.println("2. Remover Medicamento");
+        System.out.println("3. Voltar");
+        System.out.println("Escolha: ");
+
+        int op = input.nextInt();
+        input.nextLine();
+
+        switch (op) {
+            case 1 -> {
+                System.out.println("Nova Medicamento: ");
+                String medicamento = input.nextLine();
+                senior.addMedicamento(medicamento);
+                System.out.println("Medicamento adicionada com sucesso!");
+            }
+            case 2 -> {
+                System.out.println("Medicamento a remover: ");
+                String medicamento = input.nextLine();
+                senior.getMedicamentos().remove(medicamento);
+                System.out.println("Medicamento removida com sucesso");
+            }
+            case 3 -> {return;}
+            default -> System.out.println("Opção invalida");
+        }
+    }
+
+    private static void gerenciarEspecialidade() {
+        Estudante estudante = (Estudante) usuarioIsLogado;
+
+        System.out.println("\n=== GERENCIAR ESPECIALIDADE ===");
+
+        System.out.println("Suas especialidades atuais: "+estudante.getEspecialidades());
+
+        System.out.println("1. Adicionar Especialidade");
+        System.out.println("2. Remover Especialidade");
+        System.out.println("3. Voltar");
+        System.out.println("Escolha: ");
+
+        int op = input.nextInt();
+        input.nextLine();
+
+        switch (op) {
+            case 1 -> {
+                System.out.println("Nova Especialidade: ");
+                String especialidade = input.nextLine();
+                estudante.adcEspecialidade(especialidade);
+                System.out.println("Especialidade adicionada com sucesso!");
+            }
+            case 2 -> {
+                System.out.println("Especialidade a remover: ");
+                String especialidade = input.nextLine();
+                estudante.getEspecialidades().remove(especialidade);
+                System.out.println("Especialidade removida com sucesso");
+            }
+            case 3 -> {return;}
+            default -> System.out.println("Opção invalida");
+        }
+    }
+
+    private static void atualizarDisponibilidade() {
+        Estudante estudante = (Estudante) usuarioIsLogado;
+
+        System.out.println("Sua disponibilidade atual: "+(estudante.isDisponivel() ? "SIM" : "NÃO"));
+
+        System.out.println("1. Mudar disponibilidade");
+        System.out.println("2. Voltar");
+        int op = input.nextInt();
+        input.nextLine();
+
+        while (op != 1 || op != 2) {
+            System.out.println("Opção invalida");
+            System.out.println("1. Ficar disponivel");
+            System.out.println("2. Ficar indiponivel");
+            System.out.println("3. Voltar");
+            op = input.nextInt();
+            input.nextLine();
+
+            switch (op) {
+                case 1 -> {
+                    estudante.setDisponivel(true);
+                    System.out.println("Disponibilidade atualizada com sucesso!");
+                    System.out.println("Sua disponibilidade: "+estudante.isDisponivel());
+                }
+                case 2 -> {
+                    estudante.setDisponivel(false);
+                    System.out.println("Disponibilidade atualizada com sucesso!");
+                    System.out.println("Sua disponibilidade: "+estudante.isDisponivel());
+                }
+                case 3 -> {return;}
+                default -> System.out.println("Opção invalida");
+            }
+        }
+    }
 
     private static void agendarConsulta() {
         System.out.println("\n=== AGENDAR CONSULTA ===");
