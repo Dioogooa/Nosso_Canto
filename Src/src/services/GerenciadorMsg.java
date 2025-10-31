@@ -16,7 +16,6 @@ public class GerenciadorMsg {
     public void enviarMensagem(String id, Usuario remetente, Usuario destinatario, String texto) {
         Mensagem mensagem = new Mensagem(id, remetente, destinatario, texto);
         this.mensagens.add(mensagem);
-        System.out.println("\nMensagem enviada para " + destinatario.getNome());
     }
 
     public List<Mensagem> getChat(String Usario1Id, String Usario2Id) {

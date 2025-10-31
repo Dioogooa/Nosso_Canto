@@ -49,6 +49,7 @@ public class Main {
 
     private static void exibirMainMenu() {
         int op;
+        limparTela();
         System.out.println("\n=== MENU PRINCIPAL ===");
         System.out.println("1. Login");
         System.out.println("2. Cadastrar Sênior");
@@ -105,7 +106,10 @@ public class Main {
             case 5 -> gerenciarCondicoesSaude();
             case 6 -> gerenciarMedicamentos();
             case 7 -> usuarioIsLogado.exibirPerfil();
-            case 8 -> usuarioIsLogado = null;
+            case 8 -> {
+                limparTela();
+                usuarioIsLogado = null;
+            }
             default -> System.out.println("Opção invalida :/");
         }
     }
@@ -131,7 +135,10 @@ public class Main {
             case 4 -> gerenciarEspecialidade();
             case 5 -> atualizarDisponibilidade();
             case 6 -> usuarioIsLogado.exibirPerfil();
-            case 7 -> usuarioIsLogado = null;
+            case 7 -> {
+                limparTela();
+                usuarioIsLogado = null;
+            }
             default -> System.out.println("Opação invalida :/");
         }
     }
@@ -254,7 +261,7 @@ public class Main {
         //Lembrar de colocar no Menu ESTUDANTE, ficar disponivel!!! Também cadastro de especialidades como metodo
     }
 
-    private static void buscarEstudantes() { //ATUALIZEI
+    private static void buscarEstudantes() {
         System.out.println("\n=== ESTUDANTES DISPONIVEIS ===");
         var estudantes = gerenciadorUsuarios.listarEstudantes().stream()
                 .filter(Estudante::isDisponivel)
@@ -263,7 +270,7 @@ public class Main {
         if (estudantes.isEmpty()) {
             System.out.println("Nenhum estudante encontrado");
         } else {
-            estudantes.forEach(Estudante::exibirPerfil);
+            estudantes.forEach(Estudante::exibirPerfilReduzido);
         }
     }
 
@@ -428,7 +435,7 @@ public class Main {
             return;
         }
 
-        estudantesDiponiveis.forEach(Estudante::exibirPerfil);
+        estudantesDiponiveis.forEach(Estudante::exibirPerfilReduzido);
 
         System.out.println("ID do estudante: ");
         String estudanteId = input.nextLine();
@@ -458,7 +465,7 @@ public class Main {
 
         System.out.println("Consulta agendada com sucesso!");
         consulta.exibirDetalhes();
-    } //Atualizei
+    }
 
     private static void minhasConsultasSenior() {
         System.out.println("\n=== MINHAS CONSULTAS ===");
@@ -483,6 +490,7 @@ public class Main {
     }
 
     private static void chatComEstudantes() {
+        limparTela();
         System.out.println("\n=== CHAT ESTUDANTES ===");
         var estudantes = gerenciadorUsuarios.listarEstudantes();
 
@@ -491,9 +499,9 @@ public class Main {
             return;
         }
 
-        estudantes.forEach(Estudante::exibirPerfil);
+        estudantes.forEach(Estudante::exibirPerfilReduzido);
 
-        System.out.println("ID do estudante para conversa:");
+        System.out.print("\nID do estudante para conversa:");
         String estudanteId = input.nextLine();
 
         var estudanteOpt = gerenciadorUsuarios.buscarPorId(estudanteId);
@@ -521,7 +529,7 @@ public class Main {
 
         seniors.forEach(Senior::exibirPerfil);
 
-        System.out.println(" '1' para listar seniores!");
+        System.out.println("\n '1' para listar seniores!");
         System.out.print("ID do senior para conversa: ");
         String seniorId = input.nextLine();
 
@@ -537,9 +545,10 @@ public class Main {
 
         Senior senior = (Senior) seniorOpt.get();
         iniciarChat(senior, "Senior");
-    } //precisa polir tambem
+    }
 
     private static void iniciarChat(Usuario destinatario, String tipoDestinatario) {
+        limparTela();
         System.out.println("\n=== CHAT com " + destinatario.getNome() + " (" + tipoDestinatario + ") ===");
         System.out.println("Digite 'sair1' para encerrar o chat");
 
@@ -548,7 +557,6 @@ public class Main {
         if (!historico.isEmpty()) {
             System.out.println("\n--- Histórico de Mensagens ---");
             historico.forEach(Mensagem::exibirTexto);
-            System.out.println("------------\n");
         } else {
             System.out.println("Nenhuma mensagem anterior. Inicie a conversa!\n");
         }
@@ -562,12 +570,15 @@ public class Main {
 
             String mensagemId = "MSG" + System.currentTimeMillis();
             gerenciadorMsg.enviarMensagem(mensagemId, usuarioIsLogado, destinatario, texto);
-            System.out.println("✓ Mensagem enviada");
+            System.out.println("Enviada!");
         }
 
         System.out.println("Chat encerrado.");
         limparTela();
     }
+
+    //public static LocalDateTime entradaAjustadaDataHora() {
+    //}
 
     public static void limparTela() {
         try {
