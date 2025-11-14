@@ -49,7 +49,7 @@ public class Main {
 
     private static void exibirMainMenu() {
         int op;
-        limparTela();
+
         System.out.println("\n=== MENU PRINCIPAL ===");
         System.out.println("1. Login");
         System.out.println("2. Cadastrar Sênior");
@@ -59,6 +59,7 @@ public class Main {
 
         op = input.nextInt();
         input.nextLine();
+        limparTela();
 
         switch (op) {
             case 1 -> fazerLogin();
@@ -262,6 +263,7 @@ public class Main {
     }
 
     private static void buscarEstudantes() {
+        limparTela();
         System.out.println("\n=== ESTUDANTES DISPONIVEIS ===");
         var estudantes = gerenciadorUsuarios.listarEstudantes().stream()
                 .filter(Estudante::isDisponivel)
@@ -306,12 +308,14 @@ public class Main {
                 System.out.println("Nova Condição de saúde: ");
                 String condicao = input.nextLine();
                 senior.addCondicaoSaude(condicao);
+                limparTela();
                 System.out.println("Condição adicionada com sucesso!");
             }
             case 2 -> {
                 System.out.println("Condição a remover: ");
                 String condicao = input.nextLine();
                 senior.getCondicaoSaude().remove(condicao);
+                limparTela();
                 System.out.println("Condição removida com sucesso");
             }
             case 3 -> {return;}
