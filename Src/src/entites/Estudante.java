@@ -34,6 +34,15 @@ public class Estudante extends Usuario {
     }
 
     @Override
+    public void exibirPerfilReduzido() {
+        System.out.println("\n=== Perfil Estudante ===");
+        System.out.println("Nome: " + nome + " id: "+id);
+        System.out.println("Curso: " + curso);
+        System.out.println("Especialidades: " + especialidades);
+        System.out.println("Disponivel: " + (disponivel ? "Sim" : "Nao"));
+    }
+
+    @Override
     public String getTipoUsuario() {
         return "Estudante";
     }

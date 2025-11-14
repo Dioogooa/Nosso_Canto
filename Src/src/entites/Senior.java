@@ -22,12 +22,19 @@ public class Senior extends Usuario {
 
     @Override //Override (sobscrição) - Pega um metodo da superclasse e modifica ele.
     public void exibirPerfil() {
-
         System.out.println("\n=== Perfil do Sênior ===");
-        System.out.println("Nome: " + nome);
+        System.out.println("Nome: " + nome + " id:" +id);
         System.out.println("Idade "+ calcularIdade() + " anos");
         System.out.println("Condições de Saúde: " + condicaoSaude);
         System.out.println("Precisa de companhia: "+ (temAcompanhante ? "Sim" : "Não"));
+
+    }
+
+    @Override
+    public void exibirPerfilReduzido() {
+        System.out.println("\n=== Perfil do Sênior ===");
+        System.out.println("Nome: " + nome + " id:" +id);
+        System.out.println("Idade "+ calcularIdade() + " anos");
     }
 
     @Override
