@@ -22,7 +22,7 @@ public class loginGUI extends JFrame {
     public loginGUI() {
         this.gerenciadorUsuarios = new GerenciadorUsuarios();
         cadastrarExemplos();
-        inicilizarComponentes();
+        inicializarComponentes();
         configurarJanela();
     }
 
@@ -50,47 +50,106 @@ public class loginGUI extends JFrame {
         }
     }
 
-    private void inicilizarComponentes() {
+    private void inicializarComponentes() {
         //Painel principal com borda e padding OKOKOK
         JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout(10, 10));
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(30, 40, 30, 40));
+        mainPanel.setBackground(Color.WHITE);
 
         // titulo label bebes - Set de fonte calibri 20 bold e centralização
-        JLabel tituloLabel = new JLabel("Nosso Canto - Login");
-        tituloLabel.setFont(new Font("Calibri", Font.BOLD, 20));
-        tituloLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        JLabel tituloLabel = new JLabel("Nosso Canto");
+        tituloLabel.setFont(new Font("Calibri", Font.BOLD, 24));
+        tituloLabel.setForeground(new Color(0, 102, 204));
+        tituloLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        tituloLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+
+        //SUBTITULO
+        JLabel subtituloLabel = new JLabel("Faça seu login");
+        subtituloLabel.setFont(new Font("Calibri", Font.PLAIN, 14));
+        subtituloLabel.setForeground(Color.GRAY);
+        subtituloLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        subtituloLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 30, 0));
 
         //Painel formulario
-        JPanel formularioPanel = new JPanel(new GridLayout(2, 2, 10, 10));
+        JPanel formularioPanel = new JPanel(new GridBagLayout());
+        formularioPanel.setBackground(Color.WHITE);
+        GridBagConstraints c = new GridBagConstraints(); //grid Bag - restrições de posicionamento
+        c.insets = new Insets(5, 5, 5, 5);
+        c.fill = GridBagConstraints.HORIZONTAL;
 
-        JLabel emailLabel = new JLabel("Email: ");
+        //Email
+        c.gridx = 0; c.gridy = 0; //define posição do gride na primeira coluna
+        JLabel emailLabel = new JLabel("Email:");
+        emailLabel.setFont(new Font("Calibri", Font.BOLD, 12));
+        formularioPanel.add(emailLabel, c);
+
+        c.gridx = 1; c.gridy = 0;
+        c.gridwidth = 2;
         emailField = new JTextField();
+        emailField.setPreferredSize(new Dimension(200, 30));
+        formularioPanel.add(emailField, c);
 
+        //SENHA
+        c.gridx = 0; c.gridy = 1;
+        c.gridwidth = 1;
         JLabel senhaLabel = new JLabel("Senha: ");
+        senhaLabel.setFont(new Font("Calibri", Font.BOLD, 12));
+        formularioPanel.add(senhaLabel, c);
+
+        c.gridx = 1; c.gridy = 1;
+        c.gridwidth = 2;
         senhaField = new JPasswordField();
+        senhaField.setPreferredSize(new Dimension(200, 30));
+        formularioPanel.add(senhaField, c);
 
-        formularioPanel.add(emailLabel);
-        formularioPanel.add(emailField);
-        formularioPanel.add(senhaLabel);
-        formularioPanel.add(senhaField);
+        //Painel dos botoes click click (na vertical agora)
+        JPanel botaoPanel = new JPanel();
+        botaoPanel.setLayout(new BoxLayout(botaoPanel, BoxLayout.Y_AXIS));
+        botaoPanel.setBackground(Color.WHITE);
+        botaoPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
 
-        //Painel dos botoes click click
-        JPanel botaoPanel = new JPanel(new GridLayout(1, 3, 10, 10));
-
+        //botao de login
         loginButton = new JButton("Login");
-        cadastrarSeniorButton = new JButton("Cadastrar como Senior");
-        cadastrarEstudanteButton = new JButton("Cadastrar como Estudante");
+        loginButton.setFont(new Font("Calibri", Font.BOLD, 14));
+        loginButton.setBackground(new Color(0, 102, 204));
+        loginButton.setForeground(Color.WHITE);
+        loginButton.setFocusPainted(false);
+        loginButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        loginButton.setMaximumSize(new Dimension(200, 40));
 
+        //Botao de cadastrar senior
+        cadastrarSeniorButton = new JButton("Cadastrar Senior");
+        cadastrarSeniorButton.setFont(new Font("Calibri", Font.PLAIN, 12));
+        cadastrarSeniorButton.setBackground(new Color(240, 240, 240));
+        cadastrarSeniorButton.setFocusPainted(false);
+        cadastrarSeniorButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        cadastrarSeniorButton.setMaximumSize(new Dimension(200, 35));
+
+        //Botao cadastrar estudante
+        cadastrarEstudanteButton = new JButton("Cadastrar Estudante");
+        cadastrarEstudanteButton.setFont(new Font("Calibri", Font.PLAIN, 12));
+        cadastrarEstudanteButton.setBackground(new Color(240, 240, 240));
+        cadastrarEstudanteButton.setFocusPainted(false);
+        cadastrarEstudanteButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        cadastrarEstudanteButton.setMaximumSize(new Dimension(200, 35));
+
+        //Adicionar os boteos + espaçamento
         botaoPanel.add(loginButton);
+        botaoPanel.add(Box.createRigidArea(new Dimension(0, 10))); //espaço entre os bonitinhos
         botaoPanel.add(cadastrarSeniorButton);
+        botaoPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         botaoPanel.add(cadastrarEstudanteButton);
 
-        //colocar os componetes no painel main
-        mainPanel.add(tituloLabel, BorderLayout.NORTH); //titulo encima
-        mainPanel.add(formularioPanel, BorderLayout.CENTER); //formulario no mei
-        mainPanel.add(botaoPanel, BorderLayout.SOUTH); //botoes abaixo
+        //Adicionar componentes ao main painel
+        mainPanel.add(tituloLabel);
+        mainPanel.add(subtituloLabel);
+        mainPanel.add(formularioPanel);
+        mainPanel.add(botaoPanel);
 
+        //Conteudo da janela toda
+        getContentPane().setBackground(Color.WHITE);
         add(mainPanel);
         configAcoes();
     }
@@ -229,8 +288,8 @@ public class loginGUI extends JFrame {
     }
 
     private void configurarJanela() {
-        setTitle("Nosso canto - Login");
-        setSize(500, 300);
+        setTitle("Nosso canto");
+        setSize(400, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
