@@ -57,6 +57,16 @@ public class loginGUI extends JFrame {
         mainPanel.setBorder(BorderFactory.createEmptyBorder(30, 40, 30, 40));
         mainPanel.setBackground(Color.WHITE);
 
+        //Imagem
+        ImageIcon logoIcon =  carregarImagem("/resources/logo.png");
+        if (logoIcon != null) {
+            Image logoRedimensionada = logoIcon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
+            JLabel logoLabel = new JLabel(new ImageIcon(logoRedimensionada));
+            logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            logoLabel.setBorder(BorderFactory.createEmptyBorder(0,0,10,0));
+            mainPanel.add(logoLabel);
+        }
+
         // titulo label bebes - Set de fonte calibri 20 bold e centralização
         JLabel tituloLabel = new JLabel("Nosso Canto");
         tituloLabel.setFont(new Font("Calibri", Font.BOLD, 24));
@@ -249,9 +259,7 @@ public class loginGUI extends JFrame {
             @Override
             public void run() {
                 if (usuario.getTipoUsuario().equals("Senior")) {
-                    //new MenuSeniorGUI(usuario, gerenciadorUsuarios).setVisible(true);
-                    JOptionPane.showMessageDialog(null,
-                            "Menu senior ainda em desenvolvimento");
+                    new MenuSeniorGUI(usuario, gerenciadorUsuarios).setVisible(true);
                 } else {
                     //new MenuEstudanteGUI(usuario, gerenciadorUsuarios).setVisible(true);
                     JOptionPane.showMessageDialog(null,
@@ -303,5 +311,20 @@ public class loginGUI extends JFrame {
                 new loginGUI().setVisible(true);
             }
         });
+    }
+
+    private ImageIcon carregarImagem(String caminho) {
+        try {
+            java.net.URL imgURL = getClass().getResource(caminho);
+            if (imgURL != null) {
+                return new ImageIcon(imgURL);
+            } else {
+                System.out.println("Imagem não encontrada: " + caminho);
+                return null;
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao carregar imagem: " + e.getMessage());
+            return null;
+        }
     }
 }
