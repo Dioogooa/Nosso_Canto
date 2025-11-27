@@ -1,8 +1,8 @@
-package services;
+﻿package services;
 
-import entites.Consulta;
-import entites.Senior;
-import entites.Estudante;
+import entities.Consulta;
+import entities.Senior;
+import entities.Estudante;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,3 +47,4 @@ public class GerenciadorCunsultas {
         });
     }
 }
+

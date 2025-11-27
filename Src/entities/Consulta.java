@@ -1,4 +1,4 @@
-package entites;
+﻿package entities;
 
 import java.time.LocalDateTime;
 
@@ -39,3 +39,4 @@ public class Consulta {
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
 }
+

@@ -1,4 +1,4 @@
-package entites;
+﻿package entities;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class Estudante extends Usuario {
         System.out.println("\n=== Perfil do Estudante ===");
         System.out.println("Nome: " + nome);
         System.out.println("Curso: " + curso);
-        System.out.println("Instituição: " + instuicao);
+        System.out.println("InstituiÃ§Ã£o: " + instuicao);
         System.out.println("Semestre: " + semestre);
         System.out.println("Especialidades: " + especialidades);
         System.out.println("Disponivel: " + (disponivel ? "Sim" : "Nao"));
@@ -64,3 +64,4 @@ public class Estudante extends Usuario {
     public void setDisponivel(boolean disponivel) { this.disponivel = disponivel; }
 
 }
+

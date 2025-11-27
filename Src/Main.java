@@ -1,4 +1,4 @@
-import entites.*;
+﻿import entities.*;
 import services.*;
 
 import java.sql.SQLOutput;
@@ -29,12 +29,12 @@ public class Main {
 
     private static void cadastrarExemplos() {
         //Exemplo p senior
-        Senior senior = new Senior("S1", "Antônio Fagundes", "ser@", "Sen123",
+        Senior senior = new Senior("S1", "AntÃ´nio Fagundes", "ser@", "Sen123",
                 "(62)98165-9834", LocalDate.of(1955, 2, 18), "901.785.901-31",
                 "Rua A, 900, Jardim Luz", "(72)95678-3190", false);
         senior.addCondicaoSaude("Alzheimer ");
         senior.addMedicamento("Kisunla (donanemabe)");
-        senior.addMedicamento("Óleo de canabidiol");
+        senior.addMedicamento("Ã“leo de canabidiol");
 
         Estudante estudante = new Estudante("E1", "Pedro Santiago", "est@",
                 "est123", "(21)98990-1254", LocalDate.of(2003, 9, 19),
@@ -52,10 +52,10 @@ public class Main {
 
         System.out.println("\n=== MENU PRINCIPAL ===");
         System.out.println("1. Login");
-        System.out.println("2. Cadastrar Sênior");
+        System.out.println("2. Cadastrar SÃªnior");
         System.out.println("3. Cadastrar Estudante");
         System.out.println("4. Sair");
-        System.out.print("Escolha uma opção: ");
+        System.out.print("Escolha uma opÃ§Ã£o: ");
 
         op = input.nextInt();
         input.nextLine();
@@ -69,7 +69,7 @@ public class Main {
                 System.out.println("Obrigado por usar o Nosso Canto!");
                 System.exit(0);
             }
-            default -> System.out.println("Opção invalida :/");
+            default -> System.out.println("OpÃ§Ã£o invalida :/");
         }
     }
 
@@ -90,7 +90,7 @@ public class Main {
         System.out.println("2. Agendar Consulta");
         System.out.println("3. Minhas Consultas");
         System.out.println("4. Chat com Estudantes");
-        System.out.println("5. Gerenciar Condição de Saúde");
+        System.out.println("5. Gerenciar CondiÃ§Ã£o de SaÃºde");
         System.out.println("6. Gerenciar Medicamentos");
         System.out.println("7. Ver meu perfil");
         System.out.println("8. Sair da conta");
@@ -111,7 +111,7 @@ public class Main {
                 limparTela();
                 usuarioIsLogado = null;
             }
-            default -> System.out.println("Opção invalida :/");
+            default -> System.out.println("OpÃ§Ã£o invalida :/");
         }
     }
 
@@ -140,7 +140,7 @@ public class Main {
                 limparTela();
                 usuarioIsLogado = null;
             }
-            default -> System.out.println("Opação invalida :/");
+            default -> System.out.println("OpaÃ§Ã£o invalida :/");
         }
     }
 
@@ -152,7 +152,7 @@ public class Main {
         System.out.print("Senha: ");
         String senha = input.nextLine().trim();
 
-        var usuario = gerenciadorUsuarios.fazerLogin(email, senha); //Var é varivael temporaria
+        var usuario = gerenciadorUsuarios.fazerLogin(email, senha); //Var Ã© varivael temporaria
         if (usuario.isPresent()) {
             usuarioIsLogado = usuario.get();
             limparTela();
@@ -197,7 +197,7 @@ public class Main {
         System.out.println("Contato de Emergencia: ");
         String contato = input.nextLine();
 
-        System.out.println("Tem acompanhante (sim / não) - ");
+        System.out.println("Tem acompanhante (sim / nÃ£o) - ");
         String resposta = input.nextLine().toLowerCase(); //valida resposta, pro usuario n ter que digitar true/false
         boolean temAcompanhante = resposta.equals("sim") || resposta.equals("s") || resposta.equals("si");
         //coloca true caso for "sim" , "s" ou "si".. Caso contrario, vira false.
@@ -208,10 +208,10 @@ public class Main {
         gerenciadorUsuarios.cadastrarUsuario(senior);
         System.out.println("Senior cadastrado com sucesso!");
 
-        //ADICIONAR REMEDIOS E CONDIÇÃO DE SAÚDE COMO METODO NO MENU SENIOR, AQUI NO CADASTRO NÃO!!!!!! ----- LEMBRAR!!
+        //ADICIONAR REMEDIOS E CONDIÃ‡ÃƒO DE SAÃšDE COMO METODO NO MENU SENIOR, AQUI NO CADASTRO NÃƒO!!!!!! ----- LEMBRAR!!
     }
 
-    public static void cadastrarEstudante() { //fazer aqui, precisa cadastrar infos além de email e senha
+    public static void cadastrarEstudante() { //fazer aqui, precisa cadastrar infos alÃ©m de email e senha
         System.out.println("\n=== CADASTRAR ESTUDANTE ===");
 
         String id = "E" + (gerenciadorUsuarios.listarEstudantes().size() + 1);
@@ -242,7 +242,7 @@ public class Main {
         System.out.print("Endereco: ");
         String endereco = input.nextLine();
 
-        System.out.print("Instituição estudantil: ");
+        System.out.print("InstituiÃ§Ã£o estudantil: ");
         String instituicao = input.nextLine();
 
         System.out.print("Curso: ");
@@ -259,7 +259,7 @@ public class Main {
         gerenciadorUsuarios.cadastrarUsuario(estudante);
         System.out.println("Estudante cadastrado com sucesso!");
 
-        //Lembrar de colocar no Menu ESTUDANTE, ficar disponivel!!! Também cadastro de especialidades como metodo
+        //Lembrar de colocar no Menu ESTUDANTE, ficar disponivel!!! TambÃ©m cadastro de especialidades como metodo
     }
 
     private static void buscarEstudantes() {
@@ -292,11 +292,11 @@ public class Main {
     private static void gerenciarCondicoesSaude() {
         Senior senior = (Senior) usuarioIsLogado;
 
-        System.out.println("\n=== GERENCIAR CONDIÇÕES DE SAÚDE ==="); //aqui teria que ser um vetor..
-        System.out.println("Suas condições atuais: "+senior.getCondicaoSaude());
+        System.out.println("\n=== GERENCIAR CONDIÃ‡Ã•ES DE SAÃšDE ==="); //aqui teria que ser um vetor..
+        System.out.println("Suas condiÃ§Ãµes atuais: "+senior.getCondicaoSaude());
 
-        System.out.println("1. Adicionar condição");
-        System.out.println("2. Remover condição");
+        System.out.println("1. Adicionar condiÃ§Ã£o");
+        System.out.println("2. Remover condiÃ§Ã£o");
         System.out.println("3. Voltar");
         System.out.println("Escolha: ");
 
@@ -305,21 +305,21 @@ public class Main {
 
         switch (op) {
             case 1 -> {
-                System.out.println("Nova Condição de saúde: ");
+                System.out.println("Nova CondiÃ§Ã£o de saÃºde: ");
                 String condicao = input.nextLine();
                 senior.addCondicaoSaude(condicao);
                 limparTela();
-                System.out.println("Condição adicionada com sucesso!");
+                System.out.println("CondiÃ§Ã£o adicionada com sucesso!");
             }
             case 2 -> {
-                System.out.println("Condição a remover: ");
+                System.out.println("CondiÃ§Ã£o a remover: ");
                 String condicao = input.nextLine();
                 senior.getCondicaoSaude().remove(condicao);
                 limparTela();
-                System.out.println("Condição removida com sucesso");
+                System.out.println("CondiÃ§Ã£o removida com sucesso");
             }
             case 3 -> {return;}
-            default -> System.out.println("Opção invalida");
+            default -> System.out.println("OpÃ§Ã£o invalida");
         }
     }
 
@@ -327,7 +327,7 @@ public class Main {
         Senior senior = (Senior) usuarioIsLogado;
 
         System.out.println("\n=== GERENCIAR MEDICAMENTOS ==="); //aqui teria que ser um vetor..
-        System.out.println("Suas condições atuais: "+senior.getMedicamentos());
+        System.out.println("Suas condiÃ§Ãµes atuais: "+senior.getMedicamentos());
 
         System.out.println("1. Adicionar Medicamento");
         System.out.println("2. Remover Medicamento");
@@ -351,7 +351,7 @@ public class Main {
                 System.out.println("Medicamento removida com sucesso");
             }
             case 3 -> {return;}
-            default -> System.out.println("Opção invalida");
+            default -> System.out.println("OpÃ§Ã£o invalida");
         }
     }
 
@@ -385,7 +385,7 @@ public class Main {
                 System.out.println("Especialidade removida com sucesso");
             }
             case 3 -> {return;}
-            default -> System.out.println("Opção invalida");
+            default -> System.out.println("OpÃ§Ã£o invalida");
         }
     }
 
@@ -393,7 +393,7 @@ public class Main {
         Estudante estudante = (Estudante) usuarioIsLogado;
 
         System.out.println("\n=== ATUALIZAR DISPONIBILIDADE ===");
-        System.out.println("Sua disponibilidade atual: "+(estudante.isDisponivel() ? "SIM" : "NÃO"));
+        System.out.println("Sua disponibilidade atual: "+(estudante.isDisponivel() ? "SIM" : "NÃƒO"));
 
         System.out.println("1. Mudar disponibilidade");
         System.out.println("2. Voltar");
@@ -402,7 +402,7 @@ public class Main {
         input.nextLine();
 
         while (op < 1 || op > 2) {
-            System.out.println("Opção invalida");
+            System.out.println("OpÃ§Ã£o invalida");
             System.out.println("1. Ficar disponivel");
             System.out.println("2. Ficar indiponivel");
             System.out.println("3. Voltar");
@@ -422,7 +422,7 @@ public class Main {
                     System.out.println("Sua disponibilidade: "+estudante.isDisponivel());
                 }
                 case 3 -> {return;}
-                default -> System.out.println("Opção invalida");
+                default -> System.out.println("OpÃ§Ã£o invalida");
             }
         }
     }
@@ -446,14 +446,14 @@ public class Main {
 
         var estudanteOpt = gerenciadorUsuarios.buscarPorId(estudanteId);
         if(estudanteOpt.isEmpty() || !(estudanteOpt.get() instanceof Estudante)) {
-            System.out.println("Estudante não encotrado");
+            System.out.println("Estudante nÃ£o encotrado");
             return;
         }
 
         Estudante estudante = (Estudante) estudanteOpt.get();
 
         if(!estudante.isDisponivel()) {
-            System.out.println("Este estudante não está disponivel no momento");
+            System.out.println("Este estudante nÃ£o estÃ¡ disponivel no momento");
             return;
         }
 
@@ -510,13 +510,13 @@ public class Main {
 
         var estudanteOpt = gerenciadorUsuarios.buscarPorId(estudanteId);
         if (estudanteOpt.isEmpty() || !(estudanteOpt.get() instanceof Estudante)) {
-            System.out.println("Estudante não encotrado");
+            System.out.println("Estudante nÃ£o encotrado");
             return;
         }
 
         Estudante estudante = (Estudante) estudanteOpt.get();
         iniciarChat(estudante, " Estudante");
-    } //precisa de mudanças (seus devidos chats no devidos menus)
+    } //precisa de mudanÃ§as (seus devidos chats no devidos menus)
 
     private static void chatComSeniors() {
 
@@ -543,7 +543,7 @@ public class Main {
 
         var seniorOpt = gerenciadorUsuarios.buscarPorId(seniorId);
         if (seniorOpt.isEmpty() || !(seniorOpt.get() instanceof Senior)) {
-            System.out.println("Senior não encontrado");
+            System.out.println("Senior nÃ£o encontrado");
             return;
         }
 
@@ -556,10 +556,10 @@ public class Main {
         System.out.println("\n=== CHAT com " + destinatario.getNome() + " (" + tipoDestinatario + ") ===");
         System.out.println("Digite 'sair1' para encerrar o chat");
 
-        // Carregar histórico
+        // Carregar histÃ³rico
         var historico = gerenciadorMsg.getChat(usuarioIsLogado.getId(), destinatario.getId());
         if (!historico.isEmpty()) {
-            System.out.println("\n--- Histórico de Mensagens ---");
+            System.out.println("\n--- HistÃ³rico de Mensagens ---");
             historico.forEach(Mensagem::exibirTexto);
         } else {
             System.out.println("Nenhuma mensagem anterior. Inicie a conversa!\n");
@@ -601,3 +601,4 @@ public class Main {
         }
     }
 }
+

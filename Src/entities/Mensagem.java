@@ -1,4 +1,4 @@
-package entites;
+﻿package entities;
 
 import java.time.LocalDateTime;
 
@@ -36,3 +36,4 @@ public class Mensagem {
     public boolean isVisto() {return visto;}
 
 }
+

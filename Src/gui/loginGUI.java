@@ -1,8 +1,8 @@
-package gui;
+﻿package gui;
 
-import entites.Estudante;
-import entites.Senior;
-import entites.Usuario;
+import entities.Estudante;
+import entities.Senior;
+import entities.Usuario;
 import services.GerenciadorUsuarios;
 import javax.swing.*;
 import java.awt.*;
@@ -28,12 +28,12 @@ public class loginGUI extends JFrame {
 
     private void cadastrarExemplos() {
         try {
-            Senior senior = new Senior("S1", "Antônio Fagundes", "ser@", "Sen123",
+            Senior senior = new Senior("S1", "AntÃ´nio Fagundes", "ser@", "Sen123",
                     "(62)98165-9834", LocalDate.of(1955, 2, 18), "901.785.901-31",
                     "Rua A, 900, Jardim Luz", "(72)95678-3190", false);
             senior.addCondicaoSaude("Alzheimer ");
             senior.addMedicamento("Kisunla (donanemabe)");
-            senior.addMedicamento("Óleo de canabidiol");
+            senior.addMedicamento("Ã“leo de canabidiol");
 
             Estudante estudante = new Estudante("E1", "Pedro Santiago", "est@",
                     "est123", "(21)98990-1254", LocalDate.of(2003, 9, 19),
@@ -67,7 +67,7 @@ public class loginGUI extends JFrame {
             mainPanel.add(logoLabel);
         }
 
-        // titulo label bebes - Set de fonte calibri 20 bold e centralização
+        // titulo label bebes - Set de fonte calibri 20 bold e centralizaÃ§Ã£o
         JLabel tituloLabel = new JLabel("Nosso Canto");
         tituloLabel.setFont(new Font("Calibri", Font.BOLD, 24));
         tituloLabel.setForeground(new Color(0, 102, 204));
@@ -75,7 +75,7 @@ public class loginGUI extends JFrame {
         tituloLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
 
         //SUBTITULO
-        JLabel subtituloLabel = new JLabel("Faça seu login");
+        JLabel subtituloLabel = new JLabel("FaÃ§a seu login");
         subtituloLabel.setFont(new Font("Calibri", Font.PLAIN, 14));
         subtituloLabel.setForeground(Color.GRAY);
         subtituloLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -84,12 +84,12 @@ public class loginGUI extends JFrame {
         //Painel formulario
         JPanel formularioPanel = new JPanel(new GridBagLayout());
         formularioPanel.setBackground(Color.WHITE);
-        GridBagConstraints c = new GridBagConstraints(); //grid Bag - restrições de posicionamento
+        GridBagConstraints c = new GridBagConstraints(); //grid Bag - restriÃ§Ãµes de posicionamento
         c.insets = new Insets(5, 5, 5, 5);
         c.fill = GridBagConstraints.HORIZONTAL;
 
         //Email
-        c.gridx = 0; c.gridy = 0; //define posição do gride na primeira coluna
+        c.gridx = 0; c.gridy = 0; //define posiÃ§Ã£o do gride na primeira coluna
         JLabel emailLabel = new JLabel("Email:");
         emailLabel.setFont(new Font("Calibri", Font.BOLD, 12));
         formularioPanel.add(emailLabel, c);
@@ -145,9 +145,9 @@ public class loginGUI extends JFrame {
         cadastrarEstudanteButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         cadastrarEstudanteButton.setMaximumSize(new Dimension(200, 35));
 
-        //Adicionar os boteos + espaçamento
+        //Adicionar os boteos + espaÃ§amento
         botaoPanel.add(loginButton);
-        botaoPanel.add(Box.createRigidArea(new Dimension(0, 10))); //espaço entre os bonitinhos
+        botaoPanel.add(Box.createRigidArea(new Dimension(0, 10))); //espaÃ§o entre os bonitinhos
         botaoPanel.add(cadastrarSeniorButton);
         botaoPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         botaoPanel.add(cadastrarEstudanteButton);
@@ -196,13 +196,13 @@ public class loginGUI extends JFrame {
 
     private void fazerLogin() {
         try {
-            String email = emailField.getText().trim(); //so p lembrar .trim() remove espaços em branco da String (melhor qualidade de entrada qnd n pode espaço)
+            String email = emailField.getText().trim(); //so p lembrar .trim() remove espaÃ§os em branco da String (melhor qualidade de entrada qnd n pode espaÃ§o)
             String senha = new String(senhaField.getPassword()).trim();
 
             //debugs
 
             //VALIDA E VALIDA
-            if (email.isEmpty() || senha.isEmpty()) { //se não preencher os campos da erro
+            if (email.isEmpty() || senha.isEmpty()) { //se nÃ£o preencher os campos da erro
                 JOptionPane.showMessageDialog(this,
                         "Preencha todos os campos",
                         "Erro",
@@ -210,7 +210,7 @@ public class loginGUI extends JFrame {
                 return;
             }
 
-            //erro se o email n conter @ (pode melhorar) - (quem ler isso, '!' é negação de algo tmj)
+            //erro se o email n conter @ (pode melhorar) - (quem ler isso, '!' Ã© negaÃ§Ã£o de algo tmj)
             if (!email.contains("@")) {
                 JOptionPane.showMessageDialog(this,
                         "Email invalido!",
@@ -219,10 +219,10 @@ public class loginGUI extends JFrame {
                 return;
             }
 
-            //Validar no backend bebes, services.GerenciadorUsuarios - validação de front BASICA, campos preenchidos e @
+            //Validar no backend bebes, services.GerenciadorUsuarios - validaÃ§Ã£o de front BASICA, campos preenchidos e @
             Optional<Usuario> usuarioOpt = gerenciadorUsuarios.fazerLogin(email, senha);
 
-            if (usuarioOpt.isPresent()) { //Verifica se a strem é nula
+            if (usuarioOpt.isPresent()) { //Verifica se a strem Ã© nula
                 Usuario usuarioLogado = usuarioOpt.get();
                 JOptionPane.showMessageDialog(this,
                         "Login realizado com sucesso!\nBem-vindo" + usuarioLogado.getNome() + " !",
@@ -255,7 +255,7 @@ public class loginGUI extends JFrame {
         this.dispose(); //metodo swing para fechar janelas!!!!!
 
         //Logica para abrir os menus
-        SwingUtilities.invokeLater(new Runnable() { //invoker later coloca a execução na fila, coisa pos a outra, organiza ações
+        SwingUtilities.invokeLater(new Runnable() { //invoker later coloca a execuÃ§Ã£o na fila, coisa pos a outra, organiza aÃ§Ãµes
             @Override
             public void run() {
                 if (usuario.getTipoUsuario().equals("Senior")) {
@@ -319,7 +319,7 @@ public class loginGUI extends JFrame {
             if (imgURL != null) {
                 return new ImageIcon(imgURL);
             } else {
-                System.out.println("Imagem não encontrada: " + caminho);
+                System.out.println("Imagem nÃ£o encontrada: " + caminho);
                 return null;
             }
         } catch (Exception e) {
@@ -328,3 +328,4 @@ public class loginGUI extends JFrame {
         }
     }
 }
+

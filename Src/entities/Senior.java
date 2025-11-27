@@ -1,4 +1,4 @@
-package entites;
+﻿package entities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,19 +20,19 @@ public class Senior extends Usuario {
         this.temAcompanhante = temAcompanhante;
     }
 
-    @Override //Override (sobscrição) - Pega um metodo da superclasse e modifica ele.
+    @Override //Override (sobscriÃ§Ã£o) - Pega um metodo da superclasse e modifica ele.
     public void exibirPerfil() {
-        System.out.println("\n=== Perfil do Sênior ===");
+        System.out.println("\n=== Perfil do SÃªnior ===");
         System.out.println("Nome: " + nome + " id:" +id);
         System.out.println("Idade "+ calcularIdade() + " anos");
-        System.out.println("Condições de Saúde: " + condicaoSaude);
-        System.out.println("Precisa de companhia: "+ (temAcompanhante ? "Sim" : "Não"));
+        System.out.println("CondiÃ§Ãµes de SaÃºde: " + condicaoSaude);
+        System.out.println("Precisa de companhia: "+ (temAcompanhante ? "Sim" : "NÃ£o"));
 
     }
 
     @Override
     public void exibirPerfilReduzido() {
-        System.out.println("\n=== Perfil do Sênior ===");
+        System.out.println("\n=== Perfil do SÃªnior ===");
         System.out.println("Nome: " + nome + " id:" +id);
         System.out.println("Idade "+ calcularIdade() + " anos");
     }
@@ -61,3 +61,4 @@ public class Senior extends Usuario {
     public boolean isTemAcompanhante() { return temAcompanhante; }
 
 }
+

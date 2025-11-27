@@ -1,4 +1,4 @@
-package entites;
+﻿package entities;
 
 import java.time.LocalDate;
 
@@ -46,3 +46,4 @@ public abstract class Usuario { //classe abstrata para dados gerais
     public String getEndereco() { return endereco; }
     public void setEndereco(String endereco) { this.endereco = endereco; }
 }
+

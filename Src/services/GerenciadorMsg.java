@@ -1,7 +1,7 @@
-package services;
+﻿package services;
 
-import entites.Mensagem;
-import entites.Usuario;
+import entities.Mensagem;
+import entities.Usuario;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,3 +34,4 @@ public class GerenciadorMsg {
                 .collect(Collectors.toList());
     }
 }
+

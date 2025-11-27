@@ -1,7 +1,7 @@
-package gui;
+﻿package gui;
 
-import entites.Senior;
-import entites.Usuario;
+import entities.Senior;
+import entities.Usuario;
 import services.GerenciadorUsuarios;
 import javax.swing.*;
 import java.awt.*;
@@ -179,13 +179,13 @@ public class MenuSeniorGUI extends JFrame{
         perfilButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Mostrar perfil do usuário
+                // Mostrar perfil do usuÃ¡rio
                 StringBuilder perfil = new StringBuilder();
                 perfil.append("=== Meu Perfil ===\n");
                 perfil.append("Nome: ").append(usuario.getNome()).append("\n");
                 perfil.append("Email: ").append(usuario.getEmail()).append("\n");
                 perfil.append("Telefone: ").append(usuario.getTelefone()).append("\n");
-                perfil.append("Condições de Saúde: ").append(usuario.getCondicaoSaude()).append("\n");
+                perfil.append("CondiÃ§Ãµes de SaÃºde: ").append(usuario.getCondicaoSaude()).append("\n");
                 perfil.append("Medicamentos: ").append(usuario.getMedicamentos());
 
                 JOptionPane.showMessageDialog(MenuSeniorGUI.this,
@@ -221,12 +221,12 @@ public class MenuSeniorGUI extends JFrame{
         try {
             System.out.println("Tentando carregar: " + caminho);
 
-            // Mostra o diretório atual
+            // Mostra o diretÃ³rio atual
             java.io.File dir = new java.io.File(".");
-            System.out.println("Diretório atual: " + dir.getAbsolutePath());
+            System.out.println("DiretÃ³rio atual: " + dir.getAbsolutePath());
 
-            // Lista arquivos no diretório
-            System.out.println("Arquivos no diretório:");
+            // Lista arquivos no diretÃ³rio
+            System.out.println("Arquivos no diretÃ³rio:");
             for (String file : dir.list()) {
                 System.out.println(" - " + file);
             }
@@ -237,7 +237,7 @@ public class MenuSeniorGUI extends JFrame{
             if (imgURL != null) {
                 return new ImageIcon(imgURL);
             } else {
-                System.out.println("IMAGEM NÃO ENCONTRADA!");
+                System.out.println("IMAGEM NÃƒO ENCONTRADA!");
                 return null;
             }
         } catch (Exception e) {
@@ -246,3 +246,4 @@ public class MenuSeniorGUI extends JFrame{
         }
     }
 }
+
