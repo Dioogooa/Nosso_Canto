@@ -1,5 +1,6 @@
 import entites.*;
 import services.*;
+import gui.*;
 
 import java.sql.SQLOutput;
 import java.time.LocalDate;
@@ -16,36 +17,25 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("=== BEM-VINDO AO NOSSO CANTO ===");
-        cadastrarExemplos();
 
-        while (true) {
-            if (usuarioIsLogado == null) {
-                exibirMainMenu();
-            } else {
-                exibirMenuUsuario();
-            }
+        try {
+            utils.DataBaseConnection.connectionTest();
+        } catch (Exception e) {
+            System.out.println("⚠️  Modo offline - sem banco de dados");
         }
+
+        iniciarGUI();
     }
 
-    private static void cadastrarExemplos() {
-        //Exemplo p senior
-        Senior senior = new Senior("S1", "Antônio Fagundes", "ser@", "Sen123",
-                "(62)98165-9834", LocalDate.of(1955, 2, 18), "901.785.901-31",
-                "Rua A, 900, Jardim Luz", "(72)95678-3190", false);
-        senior.addCondicaoSaude("Alzheimer ");
-        senior.addMedicamento("Kisunla (donanemabe)");
-        senior.addMedicamento("Óleo de canabidiol");
-
-        Estudante estudante = new Estudante("E1", "Pedro Santiago", "est@",
-                "est123", "(21)98990-1254", LocalDate.of(2003, 9, 19),
-                "900-800-700-65", "Rua flamengo, 177, Flamengo", "UFRJ", "Psicologia",
-                7, true);
-        estudante.adcEspecialidade("Psicologo humanista");
-
-        gerenciadorUsuarios.cadastrarUsuario(senior);
-        gerenciadorUsuarios.cadastrarUsuario(estudante);
-        System.out.println("Usuarios de exemplo, cadastrados.");
+    private static void iniciarGUI() {
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                loginGUI login = new loginGUI();
+                login.setVisible(true);
+            }
+        });
     }
+
 
     private static void exibirMainMenu() {
         int op;
