@@ -36,14 +36,14 @@ public class menuSeniorGUI extends JFrame{
             mainPanel.add(logoLabel);
         }
         JLabel tituloLabel = new JLabel("Nosso canto");
-        tituloLabel.setFont(new Font("Calibri", Font.BOLD, 24));
+        tituloLabel.setFont(new Font("Calibri", Font.BOLD, 28));
         tituloLabel.setForeground(new Color(0, 102, 204));
         tituloLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         tituloLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10 ,0));
 
         //Saudation
         JLabel saudacaoLabel = new JLabel("Ola, " + usuario.getNome() + "!");
-        saudacaoLabel.setFont(new Font("Calibri", Font.BOLD, 16));
+        saudacaoLabel.setFont(new Font("Calibri", Font.BOLD, 20));
         saudacaoLabel.setForeground(Color.DARK_GRAY);
         saudacaoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         saudacaoLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 30 ,0));
@@ -97,7 +97,7 @@ public class menuSeniorGUI extends JFrame{
 
     private JButton criarBotaoMenu(String texto) {
         JButton botao = new JButton(texto);
-        botao.setFont(new Font("Calibri", Font.PLAIN, 14));
+        botao.setFont(new Font("Calibri", Font.BOLD, 16));
         botao.setBackground(new Color(240, 240, 240));
         botao.setForeground(Color.DARK_GRAY);
         botao.setFocusPainted(false);
@@ -113,7 +113,7 @@ public class menuSeniorGUI extends JFrame{
 
     private JButton criarBotaoSair(String texto) {
         JButton botao = new JButton(texto);
-        botao.setFont(new Font("Calibri", Font.BOLD, 14));
+        botao.setFont(new Font("Calibri", Font.BOLD, 16));
         botao.setBackground(new Color(220, 53, 69));
         botao.setForeground(Color.WHITE);
         botao.setFocusPainted(false);
@@ -185,7 +185,7 @@ public class menuSeniorGUI extends JFrame{
                 perfil.append("Nome: ").append(usuario.getNome()).append("\n");
                 perfil.append("Email: ").append(usuario.getEmail()).append("\n");
                 perfil.append("Telefone: ").append(usuario.getTelefone()).append("\n");
-                perfil.append("CondiÃ§Ãµes de SaÃºde: ").append(usuario.getCondicaoSaude()).append("\n");
+                perfil.append("Condições de Saúde: ").append(usuario.getCondicaoSaude()).append("\n");
                 perfil.append("Medicamentos: ").append(usuario.getMedicamentos());
 
                 JOptionPane.showMessageDialog(menuSeniorGUI.this,
