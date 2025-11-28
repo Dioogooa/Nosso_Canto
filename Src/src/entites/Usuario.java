@@ -25,6 +25,7 @@ public abstract class Usuario { //classe abstrata para dados gerais
     }
 
     public abstract void exibirPerfil();
+    public abstract void exibirPerfilReduzido();
     public abstract String getTipoUsuario();
 
     //Getters and Setters
