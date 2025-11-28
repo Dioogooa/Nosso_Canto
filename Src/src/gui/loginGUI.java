@@ -66,7 +66,7 @@ public class loginGUI extends JFrame {
         //Email
         c.gridx = 0; c.gridy = 0; //define posiÃ§Ã£o do gride na primeira coluna
         JLabel emailLabel = new JLabel("Email:");
-        emailLabel.setFont(new Font("Calibri", Font.BOLD, 12));
+        emailLabel.setFont(new Font("Calibri", Font.BOLD, 16));
         formularioPanel.add(emailLabel, c);
 
         c.gridx = 1; c.gridy = 0;
@@ -79,7 +79,7 @@ public class loginGUI extends JFrame {
         c.gridx = 0; c.gridy = 1;
         c.gridwidth = 1;
         JLabel senhaLabel = new JLabel("Senha: ");
-        senhaLabel.setFont(new Font("Calibri", Font.BOLD, 12));
+        senhaLabel.setFont(new Font("Calibri", Font.BOLD, 16));
         formularioPanel.add(senhaLabel, c);
 
         c.gridx = 1; c.gridy = 1;
@@ -96,7 +96,7 @@ public class loginGUI extends JFrame {
 
         //botao de login
         loginButton = new JButton("Login");
-        loginButton.setFont(new Font("Calibri", Font.BOLD, 14));
+        loginButton.setFont(new Font("Calibri", Font.BOLD, 18));
         loginButton.setBackground(new Color(0, 102, 204));
         loginButton.setForeground(Color.WHITE);
         loginButton.setFocusPainted(false);
@@ -200,7 +200,7 @@ public class loginGUI extends JFrame {
             if (usuarioOpt.isPresent()) { //Verifica se a strem é nao nula
                 Usuario usuarioLogado = usuarioOpt.get();
                 JOptionPane.showMessageDialog(this,
-                        "Login realizado com sucesso!\nBem-vindo" + usuarioLogado.getNome() + " !",
+                        "Login realizado com sucesso!\nBem-vindo, " + usuarioLogado.getNome() + " !",
                         "Sucesso",
                         JOptionPane.INFORMATION_MESSAGE);
 
@@ -236,9 +236,7 @@ public class loginGUI extends JFrame {
                 if (usuario.getTipoUsuario().equals("Senior")) {
                     new menuSeniorGUI(usuario, gerenciadorUsuarios).setVisible(true);
                 } else {
-                    //new MenuEstudanteGUI(usuario, gerenciadorUsuarios).setVisible(true);
-                    JOptionPane.showMessageDialog(null,
-                            "Menu estudante ainda em desenvolvimento");
+                    new MenuEstudanteGUI(usuario, gerenciadorUsuarios).setVisible(true);
                 }
             }
         });
@@ -250,9 +248,7 @@ public class loginGUI extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                //new CadastroEstudanteGUI(gerenciadorUsuarios).setVisible(true);
-                JOptionPane.showMessageDialog(null,
-                        "Cadastro de estudante ainda em desenvolvimento");
+                new CadastroEstudanteGUI(gerenciadorUsuarios).setVisible(true);
             }
         });
     }
@@ -263,9 +259,7 @@ public class loginGUI extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                //new CadastroSeniorGUI(gerenciadorUsuarios).setVisible(true);
-                JOptionPane.showMessageDialog(null,
-                        "Cadastro de senior ainda em desenvolvimento");
+                new CadastroSeniorGUI(gerenciadorUsuarios).setVisible(true);
             }
         });
     }
@@ -280,16 +274,46 @@ public class loginGUI extends JFrame {
 
     private ImageIcon carregarImagem(String caminho) {
         try {
+            System.out.println("Procurando imagem em: " + caminho);
+
+            // Tenta vários caminhos possíveis
             java.net.URL imgURL = getClass().getResource(caminho);
+
+            if (imgURL == null) {
+                // Tenta caminho alternativo (sem a barra inicial)
+                imgURL = getClass().getResource(caminho.substring(1));
+            }
+
+            if (imgURL == null) {
+                // Tenta como arquivo local
+                try {
+                    java.io.File file = new java.io.File("src" + caminho);
+                    if (file.exists()) {
+                        imgURL = file.toURI().toURL();
+                        System.out.println("Imagem encontrada como arquivo: " + file.getAbsolutePath());
+                    }
+                } catch (Exception e) {
+                    System.out.println("Arquivo local não encontrado");
+                }
+            }
+
             if (imgURL != null) {
+                System.out.println("Imagem carregada: " + imgURL);
                 return new ImageIcon(imgURL);
             } else {
-                System.out.println("Imagem nÃ£o encontrada: " + caminho);
-                return null;
+                System.out.println("Imagem NÃO encontrada em nenhum caminho: " + caminho);
+                // Retorna um ícone vazio para evitar NullPointerException
+                return criarIconeVazio();
             }
         } catch (Exception e) {
             System.out.println("Erro ao carregar imagem: " + e.getMessage());
-            return null;
+            return criarIconeVazio();
         }
+    }
+
+    private ImageIcon criarIconeVazio() {
+        // Cria um ícone vazio para evitar NullPointerException
+        java.awt.Image imagemVazia = new java.awt.image.BufferedImage(60, 60, java.awt.image.BufferedImage.TYPE_INT_ARGB);
+        return new ImageIcon(imagemVazia);
     }
 }

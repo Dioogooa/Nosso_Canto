@@ -67,6 +67,7 @@ public class mensagemDAO {
                 "", "", "", null, "", "") {
 
             @Override public void exibirPerfil() {}
+            @Override public void exibirPerfilReduzido() {}
             @Override public String getTipoUsuario() {return "";}
         };
 
@@ -74,6 +75,7 @@ public class mensagemDAO {
                 "", "", "", null, "", "") {
 
             @Override public void exibirPerfil() {}
+            @Override public void exibirPerfilReduzido() {}
             @Override public String getTipoUsuario() {return "";}
         };
 

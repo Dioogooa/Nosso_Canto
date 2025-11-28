@@ -272,20 +272,47 @@ public class usuarioDAO {
 
     public List<Usuario> listarTodosUsuarios() {
         List<Usuario> usuarios = new ArrayList<>();
-        String sql = "SELECT * FROM usuarios";
+        Connection connection = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
 
-        try (Connection connection = DataBaseConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
-            ResultSet rs = stmt.executeQuery();
+        try {
+            connection = DataBaseConnection.getConnection();
+            String sql = "SELECT * FROM usuarios";
+            stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
 
+            //Lista temporaria para processar - (tava bugando aqui)
+            List<ResultSet> resultados = new ArrayList<>();
             while (rs.next()) {
-                usuarios.add(criarUsuarioFromResultSet(rs));
+                String id = rs.getString("id");
+                String nome = rs.getString("nome");
+                String email = rs.getString("email");
+                String tipo = rs.getString("tipo");
+
+                System.out.println("Usuario encontrado: " + nome + " (" + tipo + ")");
+
+                //GAMBIARRA RS
+                if ("SENIOR".equals(tipo)) {
+                    Senior senior = new Senior(id, nome, email, "", "", null, "", "", "", false);
+                    usuarios.add(senior);
+                } else if ("ESTUDANTE".equals(tipo)) {
+                    Estudante estudante = new Estudante(id, nome, email, "", "", null, "", "", "", "", 0, false);
+                    usuarios.add(estudante);
+                }
             }
 
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao listar todos os usuarios!" + e);
+            System.out.println("Erro ao listar todos os usuarios: " + e.getMessage());
+            throw new RuntimeException("Erro ao listar todos os usuarios: ", e);
+        } finally {
+            // Fechar recursos
+            try {if (rs != null) rs.close(); } catch (SQLException e) { }
+            try {if (stmt != null) stmt.close(); } catch (SQLException e) { }
+            try {if (connection != null) connection.close(); } catch (SQLException e) { }
         }
 
+        System.out.println("Total de usuarios carregados: " + usuarios.size());
         return usuarios;
     }
 

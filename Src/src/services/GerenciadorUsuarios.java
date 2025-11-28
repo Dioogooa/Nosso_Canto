@@ -32,6 +32,7 @@ public class GerenciadorUsuarios {
         } catch (Exception e) {
             System.out.println("Erro ao carregar usuarios do BD" + e.getMessage());
             System.out.println("Continyando com lista vazia :/");
+            this.usuarios = new ArrayList<>();
         }
     }
 
