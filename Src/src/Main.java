@@ -241,7 +241,7 @@ public class Main {
         System.out.println("Periodo: ");
         int semestre = Integer.parseInt(input.nextLine());
 
-        boolean disponivel = false;
+        boolean disponivel = true;
 
         Estudante estudante = new Estudante(id, nome, email, senha, telefone, dataNascimento, cpf,
                 endereco, instituicao, curso, semestre, disponivel);

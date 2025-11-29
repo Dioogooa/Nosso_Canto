@@ -7,8 +7,8 @@ public class Consulta {
     private Senior senior;
     private Estudante estudante;
     private LocalDateTime dataHora;
-    private String tipoConsulta;
-    private String status; //AGENDADA - CONCLUIDA - CANCELADA
+    private String tipoConsulta; //Vai ficar como descrisao rs
+    private String status; //AGENDADA - CONCLUIDA - CANCELADA - SOLICITADA AGR TBM
 
     public Consulta(String id, Senior senior, Estudante estudante, LocalDateTime dataHora,
                     String tipoConsulta) {
@@ -17,7 +17,15 @@ public class Consulta {
         this.estudante = estudante;
         this.dataHora = dataHora;
         this.tipoConsulta = tipoConsulta;
-        this.status = "AGENDADA";
+        this.status = "SOLICITADA";
+    }
+
+    public boolean isPendente() {
+        return "SOLICITADA".equals(status);
+    }
+
+    public boolean isAgendada() {
+        return "AGENDADA".equals(status);
     }
 
 

@@ -180,6 +180,7 @@ public class CadastroSeniorGUI extends JFrame {
                 voltarLogin();
             }
         });
+
     }
 
     private void cadastrarSenior() {
@@ -348,4 +349,5 @@ public class CadastroSeniorGUI extends JFrame {
         java.awt.Image imagemVazia = new java.awt.image.BufferedImage(largura, altura, java.awt.image.BufferedImage.TYPE_INT_ARGB);
         return new ImageIcon(imagemVazia);
     }
+
 }

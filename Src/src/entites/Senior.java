@@ -60,4 +60,7 @@ public class Senior extends Usuario {
     public String getContatoEmergencia() { return contatoEmergencia; }
     public boolean isTemAcompanhante() { return temAcompanhante; }
 
+    public void setTemAcompanhante(boolean temAcompanhante) {this.temAcompanhante = temAcompanhante;}
+    public void setContatoEmergencia(String contatoEmergencia) {this.contatoEmergencia = contatoEmergencia;}
+
 }

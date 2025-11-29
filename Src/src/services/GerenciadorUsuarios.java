@@ -80,17 +80,40 @@ public class GerenciadorUsuarios {
     }
 
     public List<Senior> listarSeniores() {
-        return usuarios.stream()
-                .filter(u -> u instanceof Senior) //Filtra apenas instancia de Senior
+        List<Senior> seniores = usuarios.stream()
+                .filter(u -> u instanceof Senior)
                 .map(u -> (Senior) u)
-                .toList(); //Converte Usuario p Senior e .toList coleta em list
+                .toList();
+
+        // Carregar dados relacionados para cada senior
+        for (Senior senior : seniores) {
+            try {
+                usuarioDAO.carregarCondicoesSaude(senior);
+                usuarioDAO.carregarMedicamentos(senior);
+            } catch (Exception e) {
+                System.out.println("Erro ao carregar dados do senior " + senior.getNome() + ": " + e.getMessage());
+            }
+        }
+
+        return seniores;
     }
 
     public List<Estudante> listarEstudantes() {
-        return usuarios.stream()
+        List<Estudante> estudantes = usuarios.stream()
                 .filter(u -> u instanceof Estudante)
-                .map (u -> (Estudante) u)
+                .map(u -> (Estudante) u)
                 .toList();
+
+        // Carregar dados relacionados (especialidades) para cada estudante
+        for (Estudante estudante : estudantes) {
+            try {
+                usuarioDAO.carregarEspecialidades(estudante);
+            } catch (Exception e) {
+                System.out.println("Erro ao carregar especialidades do estudante " + estudante.getNome() + ": " + e.getMessage());
+            }
+        }
+
+        return estudantes;
     }
 
     public Optional<Usuario> buscarPorId(String id) { //Buscar por ID

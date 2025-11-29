@@ -87,11 +87,8 @@ public class mensagemDAO {
         );
 
         //Cfg data/hora
-        mensagem.getDataHora();
-
-        if (rs.getBoolean("visto")) {
-            mensagem.isVisto();
-        }
+        mensagem.setDataHora(rs.getTimestamp("data_hora").toLocalDateTime());
+        mensagem.setVisto(rs.getBoolean("visto"));
 
         return mensagem;
     }
