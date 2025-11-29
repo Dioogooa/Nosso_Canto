@@ -4,11 +4,13 @@ import utils.DataBaseConnection;
 import entites.Consulta;
 import entites.Senior;
 import entites.Estudante;
+import entites.Usuario;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.sql.SQLException;
 
 public class ConsultaDAO {
 
@@ -70,14 +72,27 @@ public class ConsultaDAO {
                 "WHERE c.estudante_id = ? ORDER BY c.data_hora DESC";
 
         try (Connection connection = DataBaseConnection.getConnection();
-        PreparedStatement stmt = connection.prepareStatement(sql)) {
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setString(1, estudanteId);
             ResultSet rs = stmt.executeQuery();
 
+            System.out.println("DEBUG - Buscando consultas para estudante: " + estudanteId);
+
+            int count = 0;
             while (rs.next()) {
+                count++;
+                System.out.println("DEBUG - Consulta encontrada #" + count + ":");
+                System.out.println("  ID: " + rs.getString("id"));
+                System.out.println("  Senior: " + rs.getString("senior_nome"));
+                System.out.println("  Estudante: " + rs.getString("estudante_nome"));
+                System.out.println("  Status: " + rs.getString("status"));
+                System.out.println("  Data: " + rs.getTimestamp("data_hora"));
+
                 consultas.add(criarConsultasFromResultSet(rs));
             }
+
+            System.out.println("DEBUG - Total de consultas encontradas: " + count);
 
         } catch (Exception e) {
             throw new RuntimeException("Erro ao listar consultas de estudante", e);
@@ -87,11 +102,18 @@ public class ConsultaDAO {
     }
 
     private Consulta criarConsultasFromResultSet(ResultSet rs) throws SQLException {
-        Senior senior = new Senior(rs.getString("senior_id"), rs.getString("senior_nome"),
-                "", "", "", null, "", "", "", false);
+        // Usar dados já carregados do ResultSet, sem buscar novamente no banco
+        Senior senior = new Senior(
+                rs.getString("senior_id"),
+                rs.getString("senior_nome"),
+                "", "", "", null, "", "", "", false
+        );
 
-        Estudante estudante = new Estudante(rs.getString("estudante_id"), rs.getString("estudante_nome"),
-                "", "", "", null, "", "", "", "", 0, false);
+        Estudante estudante = new Estudante(
+                rs.getString("estudante_id"),
+                rs.getString("estudante_nome"),
+                "", "", "", null, "", "", "", "", 0, false
+        );
 
         Consulta consulta = new Consulta(
                 rs.getString("id"),

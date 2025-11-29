@@ -131,16 +131,16 @@ public class menuSeniorGUI extends JFrame{
         buscarEstudantesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(menuSeniorGUI.this,
-                        "Buscar Estuntes - Em Desenvolvimento");
+                new BuscarEstudantesGUI(usuario, gerenciador).setVisible(true);
+                dispose();
             }
         });
 
         agendarConsultaButoon.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(menuSeniorGUI.this,
-                        "Agendar Consulta - Em Desenvolvimento");
+                new AgendarConsultaGUI(usuario, gerenciador).setVisible(true);
+                dispose();
             }
         });
 

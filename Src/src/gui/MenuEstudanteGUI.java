@@ -119,16 +119,16 @@ public class MenuEstudanteGUI extends JFrame {
         buscarSeniorsBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(MenuEstudanteGUI.this,
-                        "Buscar Seniors - Em desenvolvimento");
+                new BuscarSeniorsGUI(usuario, gerenciador).setVisible(true);
+                dispose();
             }
         });
 
         minhasConsultasBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(MenuEstudanteGUI.this,
-                        "Minhas Consultas - Em desenvolvimento");
+                new MinhasConsultasEstudanteGUI(usuario, gerenciador).setVisible(true);
+                dispose();
             }
         });
 

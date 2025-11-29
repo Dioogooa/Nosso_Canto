@@ -35,4 +35,7 @@ public class Mensagem {
     public LocalDateTime getDataHora() {return dataHora;}
     public boolean isVisto() {return visto;}
 
+    public void setDataHora(LocalDateTime dataHora) {this.dataHora = dataHora;}
+    public void setVisto(boolean visto) {this.visto = visto;}
+
 }

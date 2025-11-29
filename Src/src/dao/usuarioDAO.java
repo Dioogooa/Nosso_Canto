@@ -193,9 +193,15 @@ public class usuarioDAO {
         String email = rs.getString("email");
         String senha = rs.getString("senha");
         String telefone = rs.getString("telefone");
-        LocalDate dataNascimento = rs.getDate("data_nascimento").toLocalDate();
+
+        // Tratar data_nascimento que pode ser null
+        java.sql.Date dataNascSql = rs.getDate("data_nascimento");
+        LocalDate dataNascimento = (dataNascSql != null) ? dataNascSql.toLocalDate() : null;
+
         String cpf = rs.getString("cpf");
         String endereco = rs.getString("endereco");
+
+        System.out.println("DEBUG - Criando usuário: " + nome + " Tipo: " + tipo);
 
         if ("SENIOR".equals(tipo)) {
             Senior senior = new Senior(id, nome, email, senha, telefone, dataNascimento, cpf, endereco,
@@ -205,18 +211,36 @@ public class usuarioDAO {
             carregarMedicamentos(senior);
 
             return senior;
-        } else {
+        } else if ("ESTUDANTE".equals(tipo)) {
+            // Tratar campos que podem ser null para Estudante ---
+            String instituicao = rs.getString("instituicao");
+            String curso = rs.getString("curso");
+            int semestre = rs.getInt("semestre");
+            boolean disponivel = rs.getBoolean("disponivel");
+
+            // Se semestre for 0 no banco (SQL NULL), usar 1 como default!!!!!
+            if (semestre == 0) semestre = 1;
+
             Estudante estudante = new Estudante(id, nome, email, senha, telefone, dataNascimento, cpf, endereco,
-                    rs.getString("instituicao"), rs.getString("curso"), rs.getInt("semestre"),
-                    rs.getBoolean("disponivel"));
+                    (instituicao != null) ? instituicao : "Não informada",
+                    (curso != null) ? curso : "Não informado",
+                    semestre,
+                    disponivel);
 
             carregarEspecialidades(estudante);
 
+            System.out.println("DEBUG - Estudante criado: " + estudante.getNome() +
+                    ", Curso: " + estudante.getCurso() +
+                    ", Semestre: " + estudante.getSemestre());
+
             return estudante;
+        } else {
+            System.out.println("Tipo de usuário desconhecido: " + tipo);
+            return null;
         }
     }
 
-    private void carregarCondicoesSaude(Senior senior) {
+    public void carregarCondicoesSaude(Senior senior) {
         String sql = "SELECT condicao FROM condicoes_saude WHERE senior_id = ?";
 
         try (Connection connection = DataBaseConnection.getConnection();
@@ -234,7 +258,7 @@ public class usuarioDAO {
         }
     }
 
-    private void carregarMedicamentos(Senior senior) {
+    public void carregarMedicamentos(Senior senior) {
         String sql = "SELECT medicamento FROM medicamentos WHERE senior_id = ?";
 
         try (Connection connection = DataBaseConnection.getConnection();
@@ -252,7 +276,7 @@ public class usuarioDAO {
         }
     }
 
-    private void carregarEspecialidades(Estudante estudante) {
+    public void carregarEspecialidades(Estudante estudante) {
         String sql = "SELECT especialidade FROM especialidades WHERE estudante_id = ?";
 
         try (Connection connection = DataBaseConnection.getConnection();
@@ -272,44 +296,54 @@ public class usuarioDAO {
 
     public List<Usuario> listarTodosUsuarios() {
         List<Usuario> usuarios = new ArrayList<>();
-        Connection connection = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
 
-        try {
-            connection = DataBaseConnection.getConnection();
-            String sql = "SELECT * FROM usuarios";
-            stmt = connection.prepareStatement(sql);
-            rs = stmt.executeQuery();
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement("SELECT * FROM usuarios");
+             ResultSet rs = stmt.executeQuery()) {
 
-            //Lista temporaria para processar - (tava bugando aqui)
-            List<ResultSet> resultados = new ArrayList<>();
+            System.out.println("=== DEBUG listarTodosUsuarios ===");
+
             while (rs.next()) {
                 String id = rs.getString("id");
                 String nome = rs.getString("nome");
-                String email = rs.getString("email");
                 String tipo = rs.getString("tipo");
+                String email = rs.getString("email");
+                String telefone = rs.getString("telefone");
 
-                System.out.println("Usuario encontrado: " + nome + " (" + tipo + ")");
+                java.sql.Date dataNascSql = rs.getDate("data_nascimento");
+                LocalDate dataNascimento = (dataNascSql != null) ? dataNascSql.toLocalDate() : null;
 
-                //GAMBIARRA RS
+                String cpf = rs.getString("cpf");
+                String endereco = rs.getString("endereco");
+
+                System.out.println("Encontrado: " + nome + " (" + tipo + ") - ID: " + id);
+
                 if ("SENIOR".equals(tipo)) {
-                    Senior senior = new Senior(id, nome, email, "", "", null, "", "", "", false);
+                    String contatoEmergencia = rs.getString("contato_emergencia");
+                    boolean temAcompanhante = rs.getBoolean("tem_acompanhante");
+
+                    Senior senior = new Senior(id, nome, email, "", telefone, dataNascimento, cpf, endereco,
+                            contatoEmergencia, temAcompanhante);
                     usuarios.add(senior);
+
                 } else if ("ESTUDANTE".equals(tipo)) {
-                    Estudante estudante = new Estudante(id, nome, email, "", "", null, "", "", "", "", 0, false);
+                    String instituicao = rs.getString("instituicao");
+                    String curso = rs.getString("curso");
+                    int semestre = rs.getInt("semestre");
+                    boolean disponivel = rs.getBoolean("disponivel");
+
+                    // Se semestre for 0 (NULL no banco), usar 1 como default
+                    if (semestre == 0) semestre = 1;
+
+                    Estudante estudante = new Estudante(id, nome, email, "", telefone, dataNascimento, cpf, endereco,
+                            instituicao, curso, semestre, disponivel);
                     usuarios.add(estudante);
                 }
             }
 
         } catch (Exception e) {
-            System.out.println("Erro ao listar todos os usuarios: " + e.getMessage());
-            throw new RuntimeException("Erro ao listar todos os usuarios: ", e);
-        } finally {
-            // Fechar recursos
-            try {if (rs != null) rs.close(); } catch (SQLException e) { }
-            try {if (stmt != null) stmt.close(); } catch (SQLException e) { }
-            try {if (connection != null) connection.close(); } catch (SQLException e) { }
+            System.out.println("Erro no listarTodosUsuarios: " + e.getMessage());
+            e.printStackTrace();
         }
 
         System.out.println("Total de usuarios carregados: " + usuarios.size());
@@ -354,5 +388,81 @@ public class usuarioDAO {
         }
 
         return estudantes;
+    }
+
+    public void carregarDadosCompletos(Usuario usuario) {
+        if (usuario instanceof Senior) {
+            carregarCondicoesSaude((Senior) usuario);
+            carregarMedicamentos((Senior) usuario);
+            // Também carrega dados básicos do senior
+            carregarDadosSenior((Senior) usuario);
+        } else if (usuario instanceof Estudante) {
+            carregarEspecialidades((Estudante) usuario);
+            // Também carrega dados básicos do estudante
+            carregarDadosEstudante((Estudante) usuario);
+        }
+    }
+
+    private void carregarDadosSenior(Senior senior) {
+        String sql = "SELECT telefone, data_nascimento, cpf, endereco, contato_emergencia, tem_acompanhante " +
+                "FROM usuarios WHERE id = ?";
+
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, senior.getId());
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                senior.setTelefone(rs.getString("telefone"));
+
+                java.sql.Date dataNascSql = rs.getDate("data_nascimento");
+                if (dataNascSql != null) {
+                    senior.setDataNascimento(dataNascSql.toLocalDate());
+                }
+
+                senior.setCpf(rs.getString("cpf"));
+                senior.setEndereco(rs.getString("endereco"));
+                senior.setContatoEmergencia(rs.getString("contato_emergencia"));
+                senior.setTemAcompanhante(rs.getBoolean("tem_acompanhante"));
+            }
+
+        } catch (Exception e) {
+            System.out.println("Erro ao carregar dados do senior: " + e.getMessage());
+        }
+    }
+
+    private void carregarDadosEstudante(Estudante estudante) {
+        String sql = "SELECT telefone, data_nascimento, cpf, endereco, instituicao, curso, semestre, disponivel " +
+                "FROM usuarios WHERE id = ?";
+
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, estudante.getId());
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                estudante.setTelefone(rs.getString("telefone"));
+
+                java.sql.Date dataNascSql = rs.getDate("data_nascimento");
+                if (dataNascSql != null) {
+                    estudante.setDataNascimento(dataNascSql.toLocalDate());
+                }
+
+                estudante.setCpf(rs.getString("cpf"));
+                estudante.setEndereco(rs.getString("endereco"));
+                estudante.setInstuicao(rs.getString("instituicao"));
+                estudante.setCurso(rs.getString("curso"));
+
+                int semestre = rs.getInt("semestre");
+                estudante.setSemestre(semestre == 0 ? 1 : semestre); // Default 1 se for 0
+
+                estudante.setDisponivel(rs.getBoolean("disponivel"));
+            }
+
+        } catch (Exception e) {
+            System.out.println("Erro ao carregar dados do estudante: " + e.getMessage());
+        }
     }
 }
