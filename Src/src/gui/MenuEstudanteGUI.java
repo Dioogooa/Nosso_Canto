@@ -135,8 +135,8 @@ public class MenuEstudanteGUI extends JFrame {
         chatBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(MenuEstudanteGUI.this,
-                        "Chat com Seniors - Em desenvolvimento");
+                new SelecionarConsultaChatGUI(usuario, gerenciador, "ESTUDANTE").setVisible(true);
+                dispose();
             }
         });
 

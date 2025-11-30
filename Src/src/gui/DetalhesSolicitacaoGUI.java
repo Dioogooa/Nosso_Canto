@@ -1,5 +1,6 @@
 package gui;
 
+import dao.ConsultaDAO;
 import entites.Consulta;
 import entites.Estudante;
 import services.GerenciadorCunsultas;
@@ -163,19 +164,27 @@ public class DetalhesSolicitacaoGUI extends JFrame {
                 JOptionPane.YES_NO_OPTION);
 
         if (confirm == JOptionPane.YES_OPTION) {
-            // Atualizar status para AGENDADA
-            consulta.setStatus("AGENDADA");
+            try {
+                consulta.setStatus("AGENDADA"); // Atualizar status para AGENDADA
 
-            // Aqui você pode atualizar no banco também
-            // new ConsultaDAO().atualizarStatus(consulta.getId(), "AGENDADA");
+                // ATUALIZAR NO BD
+                ConsultaDAO consultaDAO = new ConsultaDAO();
+                consultaDAO.atualizarStatus(consulta.getId(), "AGENDADA");
 
-            JOptionPane.showMessageDialog(this,
-                    "Solicitação aceita com sucesso!\n\n" +
-                            "A consulta foi agendada e já aparece na sua lista de consultas.",
-                    "Solicitação Aceita",
-                    JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Solicitação aceita com sucesso!\n\n" +
+                                "A consulta foi agendada e já aparece na sua lista de consultas.",
+                        "Solicitação Aceita",
+                        JOptionPane.INFORMATION_MESSAGE);
 
-            voltarParaConsultas();
+                voltarParaConsultas();
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,
+                        "Erro ao aceitar solicitação: " + e.getMessage(),
+                        "Erro",
+                        JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
@@ -187,18 +196,27 @@ public class DetalhesSolicitacaoGUI extends JFrame {
                 JOptionPane.YES_NO_OPTION);
 
         if (confirm == JOptionPane.YES_OPTION) {
-            // Atualizar status para RECUSADA
-            consulta.setStatus("RECUSADA");
+            try {
+                // Atualizar status para RECUSADA
+                consulta.setStatus("RECUSADA");
 
-            // Aqui você pode atualizar no banco também
-            // new ConsultaDAO().atualizarStatus(consulta.getId(), "RECUSADA");
+                // ATUALIZAR NO BANCO DE DADOS
+                ConsultaDAO consultaDAO = new ConsultaDAO();
+                consultaDAO.atualizarStatus(consulta.getId(), "RECUSADA");
 
-            JOptionPane.showMessageDialog(this,
-                    "Solicitação recusada.",
-                    "Solicitação Recusada",
-                    JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Solicitação recusada.",
+                        "Solicitação Recusada",
+                        JOptionPane.INFORMATION_MESSAGE);
 
-            voltarParaConsultas();
+                voltarParaConsultas();
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,
+                        "Erro ao recusar solicitação: " + e.getMessage(),
+                        "Erro",
+                        JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
