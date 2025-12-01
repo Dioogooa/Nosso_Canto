@@ -4,11 +4,9 @@ import entites.Consulta;
 import entites.Mensagem;
 import entites.Usuario;
 import dao.mensagemDAO;
-import services.GerenciadorMsg;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -16,52 +14,49 @@ public class ChatGUI extends JFrame {
     private Usuario usuarioLogado;
     private Usuario outroUsuario;
     private Consulta consulta;
-    private GerenciadorMsg gerenciadorMsg;
     private mensagemDAO mensagemDAO;
 
     private JTextArea chatArea;
     private JTextField mensagemField;
     private JButton enviarButton;
-    private Timer timerAtualizacao;
 
     public ChatGUI(Usuario usuarioLogado, Usuario outroUsuario, Consulta consulta) {
         this.usuarioLogado = usuarioLogado;
         this.outroUsuario = outroUsuario;
         this.consulta = consulta;
-        this.gerenciadorMsg = new GerenciadorMsg();
         this.mensagemDAO = new mensagemDAO();
 
-        inicializarComponentes();
-        configurarJanela();
+        // CONFIGURAÇÃO DA JANELA (igual ao que funciona)
+        setTitle("Chat - " + outroUsuario.getNome());
+        setSize(500, 500);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        // USAR O MESMO LAYOUT QUE FUNCIONA
+        criarInterfaceQueFunciona();
         carregarMensagens();
-        iniciarAtualizacaoAutomatica();
+
+        setVisible(true);
     }
 
-    private void inicializarComponentes() {
-        // Painel principal
-        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+    private void criarInterfaceQueFunciona() {
+        // 1. PAINEL PRINCIPAL COM BORDERLAYOUT (para organização)
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         mainPanel.setBackground(Color.WHITE);
 
-        // Cabeçalho do chat
-        JPanel headerPanel = new JPanel(new BorderLayout());
+        // 2. CABEÇALHO (Norte)
+        JPanel headerPanel = new JPanel();
         headerPanel.setBackground(new Color(0, 102, 204));
         headerPanel.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
 
-        JLabel tituloLabel = new JLabel("Chat - " + outroUsuario.getNome());
-        tituloLabel.setFont(new Font("Calibri", Font.BOLD, 16));
-        tituloLabel.setForeground(Color.WHITE);
+        JLabel titulo = new JLabel("Chat com " + outroUsuario.getNome());
+        titulo.setForeground(Color.WHITE);
+        titulo.setFont(new Font("Calibri", Font.BOLD, 16));
+        headerPanel.add(titulo);
 
-        JLabel consultaLabel = new JLabel("Consulta: " +
-                consulta.getDataHora().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
-        consultaLabel.setFont(new Font("Calibri", Font.PLAIN, 12));
-        consultaLabel.setForeground(new Color(200, 200, 255));
-
-        headerPanel.add(tituloLabel, BorderLayout.WEST);
-        headerPanel.add(consultaLabel, BorderLayout.EAST);
-
-        // Área do chat
-        chatArea = new JTextArea();
+        // 3. ÁREA DO CHAT (Centro) - MANTENDO A LÓGICA QUE FUNCIONA
+        chatArea = new JTextArea(15, 40);
         chatArea.setEditable(false);
         chatArea.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         chatArea.setBackground(new Color(248, 248, 248));
@@ -69,64 +64,77 @@ public class ChatGUI extends JFrame {
         chatArea.setWrapStyleWord(true);
 
         JScrollPane chatScroll = new JScrollPane(chatArea);
-        chatScroll.setBorder(BorderFactory.createTitledBorder("Mensagens"));
-        chatScroll.getVerticalScrollBar().setUnitIncrement(16);
+        chatScroll.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
 
-        // Painel de entrada de mensagem
+        // 4. ÁREA DE ENVIO (Sul) - MANTENDO A ESTRUTURA QUE FUNCIONA
         JPanel inputPanel = new JPanel(new BorderLayout(10, 0));
-        inputPanel.setBackground(Color.WHITE);
         inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+        inputPanel.setBackground(Color.WHITE);
 
+        // CAMPO DE TEXTO (simples, mas bonito)
         mensagemField = new JTextField();
         mensagemField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         mensagemField.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(200, 200, 200)),
+                BorderFactory.createLineBorder(new Color(180, 180, 180)),
                 BorderFactory.createEmptyBorder(8, 10, 8, 10)
         ));
+        mensagemField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    enviarMensagem();
+                }
+            }
+        });
 
+        // BOTÃO ENVIAR (visível e bonito)
         enviarButton = new JButton("Enviar");
         enviarButton.setFont(new Font("Calibri", Font.BOLD, 14));
         enviarButton.setBackground(new Color(0, 102, 204));
         enviarButton.setForeground(Color.WHITE);
         enviarButton.setFocusPainted(false);
         enviarButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        enviarButton.setPreferredSize(new Dimension(80, 40));
+        enviarButton.setPreferredSize(new Dimension(100, 40)); // TAMANHO FIXO
+
+        // GARANTIR que o botão está visível
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.setBackground(Color.WHITE);
+        buttonPanel.add(enviarButton);
 
         inputPanel.add(mensagemField, BorderLayout.CENTER);
-        inputPanel.add(enviarButton, BorderLayout.EAST);
+        inputPanel.add(buttonPanel, BorderLayout.EAST);
 
-        // Botão voltar
+        // 5. BOTÃO VOLTAR (Sul também)
         JButton voltarButton = new JButton("Voltar");
         voltarButton.setFont(new Font("Calibri", Font.PLAIN, 12));
         voltarButton.setBackground(new Color(240, 240, 240));
-        voltarButton.setFocusPainted(false);
-        voltarButton.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
+        voltarButton.addActionListener(e -> voltar());
 
         JPanel footerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         footerPanel.setBackground(Color.WHITE);
         footerPanel.add(voltarButton);
 
-        // Adicionar componentes
+        // 6. MONTAR TUDO (MESMA LÓGICA QUE FUNCIONA)
         mainPanel.add(headerPanel, BorderLayout.NORTH);
         mainPanel.add(chatScroll, BorderLayout.CENTER);
-        mainPanel.add(inputPanel, BorderLayout.SOUTH);
-        mainPanel.add(footerPanel, BorderLayout.SOUTH);
+
+        // Painel combinado para input + footer
+        JPanel southPanel = new JPanel(new BorderLayout());
+        southPanel.add(inputPanel, BorderLayout.CENTER);
+        southPanel.add(footerPanel, BorderLayout.SOUTH);
+        mainPanel.add(southPanel, BorderLayout.SOUTH);
 
         add(mainPanel);
 
-        // Configurar ações
-        configurarAcoes(voltarButton);
-    }
-
-    private void configurarAcoes(JButton voltarButton) {
-        // Enviar mensagem com botão
+        // AÇÃO DO BOTÃO (MESMA LÓGICA QUE FUNCIONA)
         enviarButton.addActionListener(e -> enviarMensagem());
 
-        // Enviar mensagem com Enter
-        mensagemField.addActionListener(e -> enviarMensagem());
-
-        // Voltar
-        voltarButton.addActionListener(e -> voltar());
+        // FOCO
+        SwingUtilities.invokeLater(() -> {
+            mensagemField.requestFocusInWindow();
+            System.out.println("DEBUG: Interface carregada - botão visível? " + enviarButton.isVisible());
+            System.out.println("DEBUG: Tamanho do botão: " + enviarButton.getSize());
+        });
     }
 
     private void carregarMensagens() {
@@ -134,36 +142,21 @@ public class ChatGUI extends JFrame {
             List<Mensagem> mensagens = mensagemDAO.buscarConversa(
                     usuarioLogado.getId(), outroUsuario.getId());
 
-            chatArea.setText("");
+            chatArea.setText(""); // Limpar
 
-            for (Mensagem mensagem : mensagens) {
-                adicionarMensagemNaTela(mensagem);
+            for (Mensagem msg : mensagens) {
+                boolean minha = msg.getRemetente().getId().equals(usuarioLogado.getId());
+                String nome = minha ? "Você" : msg.getRemetente().getNome();
+                String hora = msg.getDataHora().format(DateTimeFormatter.ofPattern("HH:mm"));
+
+                chatArea.append("[" + hora + "] " + nome + ": " + msg.getTexto() + "\n");
             }
 
             chatArea.setCaretPosition(chatArea.getDocument().getLength());
 
         } catch (Exception e) {
-            System.out.println("Erro ao carregar mensagens: " + e.getMessage());
-            JOptionPane.showMessageDialog(this,
-                    "Erro ao carregar mensagens: " + e.getMessage(),
-                    "Erro",
-                    JOptionPane.ERROR_MESSAGE);
+            chatArea.setText("Erro ao carregar mensagens: " + e.getMessage());
         }
-    }
-
-    private void adicionarMensagemNaTela(Mensagem mensagem) {
-        boolean isMinhaMensagem = mensagem.getRemetente().getId().equals(usuarioLogado.getId());
-
-        String formatoMensagem = isMinhaMensagem ?
-                "[%s] Eu: %s\n" :
-                "[%s] %s: %s\n";
-
-        String horario = mensagem.getDataHora().format(DateTimeFormatter.ofPattern("HH:mm"));
-        String texto = String.format(formatoMensagem, horario,
-                isMinhaMensagem ? "" : mensagem.getRemetente().getNome(),
-                mensagem.getTexto());
-
-        chatArea.append(texto);
     }
 
     private void enviarMensagem() {
@@ -174,21 +167,17 @@ public class ChatGUI extends JFrame {
         }
 
         try {
-            // Gerar ID único para a mensagem
-            String mensagemId = "M" + System.currentTimeMillis();
-
-            // Criar e salvar mensagem
-            Mensagem mensagem = new Mensagem(mensagemId, usuarioLogado, outroUsuario, texto);
+            // Salvar no banco
+            String msgId = "M" + System.currentTimeMillis();
+            Mensagem mensagem = new Mensagem(msgId, usuarioLogado, outroUsuario, texto);
             mensagemDAO.salvar(mensagem);
 
-            // Adicionar na tela
-            adicionarMensagemNaTela(mensagem);
+            // Atualizar tela
+            carregarMensagens();
 
-            // Limpar campo de texto
+            // Limpar campo
             mensagemField.setText("");
-
-            // Rolagem automática
-            chatArea.setCaretPosition(chatArea.getDocument().getLength());
+            mensagemField.requestFocusInWindow();
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
@@ -198,65 +187,12 @@ public class ChatGUI extends JFrame {
         }
     }
 
-    private void iniciarAtualizacaoAutomatica() {
-        // Atualizar mensagens a cada 3 segundos
-        timerAtualizacao = new Timer(3000, e -> {
-            atualizarMensagens();
-        });
-        timerAtualizacao.start();
-    }
-
-    private void atualizarMensagens() {
-        try {
-            int posicaoAtual = chatArea.getCaretPosition();
-            int linhaAtual = chatArea.getLineOfOffset(posicaoAtual);
-
-            List<Mensagem> mensagens = mensagemDAO.buscarConversa(
-                    usuarioLogado.getId(), outroUsuario.getId());
-
-            if (mensagens.size() > chatArea.getLineCount()) {
-                carregarMensagens();
-                try {
-                    int novaPosicao = chatArea.getLineStartOffset(Math.min(linhaAtual, chatArea.getLineCount() - 1));
-                    chatArea.setCaretPosition(novaPosicao);
-                } catch (Exception ex) {
-                    chatArea.setCaretPosition(chatArea.getDocument().getLength());
-                }
-            }
-
-        } catch (Exception e) {
-            System.out.println("Erro na atualização automática: " + e.getMessage());
-        }
-    }
-
     private void voltar() {
-        if (timerAtualizacao != null) {
-            timerAtualizacao.stop();
-        }
-
-        this.dispose();
-
-        // Volta para tela de usuario certo --
+        dispose();
         if (usuarioLogado.getTipoUsuario().equals("Senior")) {
             new MinhasConsultasSeniorGUI(usuarioLogado, new services.GerenciadorUsuarios()).setVisible(true);
         } else {
             new MinhasConsultasEstudanteGUI(usuarioLogado, new services.GerenciadorUsuarios()).setVisible(true);
         }
-    }
-
-    private void configurarJanela() {
-        setTitle("Nosso Canto - Chat");
-        setSize(500, 600);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setResizable(true);
-    }
-
-    @Override
-    public void dispose() { //Garantir que vai fechar a outra tela
-        if (timerAtualizacao != null) {
-            timerAtualizacao.stop();
-        }
-        super.dispose();
     }
 }
