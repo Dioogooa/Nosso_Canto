@@ -29,9 +29,11 @@ public class GerenciadorCunsultas {
     }
 
     public List<Consulta> getConsultarSenior(String seniorId) {
-        return consultas.stream()
-                .filter(c -> c.getSenior().getId().equals(seniorId))
-                .toList();
+        ConsultaDAO consultaDAO = new ConsultaDAO();
+        return consultaDAO.listarSeniores(seniorId);
+        //return consultas.stream()
+        //        .filter(c -> c.getSenior().getId().equals(seniorId))
+        //        .toList();
     }
 
     public List<Consulta> getConsultarEstudante(String estudanteId) {

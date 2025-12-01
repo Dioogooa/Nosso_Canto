@@ -51,11 +51,25 @@ public class ConsultaDAO {
             stmt.setString(1, seniorId);
             ResultSet rs = stmt.executeQuery();
 
+            System.out.println("DEBUG - Buscando consultas para senior: " + seniorId);
+
+            int count = 0;
             while (rs.next()) {
+                count++;
+                System.out.println("DEBUG - Consulta encontrada #" + count + ":");
+                System.out.println("  ID: " + rs.getString("id"));
+                System.out.println("  Estudante: " + rs.getString("estudante_nome"));
+                System.out.println("  Status: " + rs.getString("status"));
+                System.out.println("  Data: " + rs.getTimestamp("data_hora"));
+
                 consultas.add(criarConsultasFromResultSet(rs));
             }
 
+            System.out.println("DEBUG - Total de consultas encontradas para senior: " + count);
+
         } catch (Exception e) {
+            System.out.println("Erro no listarSeniores: " + e.getMessage());
+            e.printStackTrace();
             throw new RuntimeException("Erro ao listar consultas de senior", e);
         }
 
@@ -127,4 +141,21 @@ public class ConsultaDAO {
         return consulta;
     }
 
+    public void atualizarStatus(String consultaId, String novoStatus) {
+        String sql = "UPDATE consultas SET status = ? WHERE id = ?";
+
+        try (Connection connection = DataBaseConnection.getConnection();
+        PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, novoStatus);
+            stmt.setString(2, consultaId);
+
+            int linhaAfetadasDAO = stmt.executeUpdate();
+            System.out.println("DEBUG - Status atualizado para: " + novoStatus +
+                    " - Linhas afetadas: " + linhaAfetadasDAO);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao atualizar status da consulta: " + e.getMessage(), e);
+        }
+    }
 }

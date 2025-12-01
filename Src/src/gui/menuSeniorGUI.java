@@ -58,7 +58,7 @@ public class menuSeniorGUI extends JFrame{
         //Bottons
         JButton buscarEstudantesButton = criarBotaoMenu(" Buscar Estudantes ");
         JButton agendarConsultaButoon = criarBotaoMenu(" Agendar Consulta ");
-        JButton minhasConsultasButton = criarBotaoMenu (" Minha Consultas ");
+        JButton minhasConsultasButton = criarBotaoMenu (" Minhas Consultas ");
         JButton chatButton = criarBotaoMenu(" Chat com Estudantes ");
         JButton condiciesSaudeButton = criarBotaoMenu(" Gerenciar Saude ");
         JButton medicamentosButton  = criarBotaoMenu(" Gerenciar Medicamentos ");
@@ -147,16 +147,16 @@ public class menuSeniorGUI extends JFrame{
         minhasConsultasButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(menuSeniorGUI.this,
-                        "Minhas Consultas - Em Desenvolvimento");
+                new MinhasConsultasSeniorGUI(usuario, gerenciador).setVisible(true);
+                dispose();
             }
         });
 
         chatButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(menuSeniorGUI.this,
-                        "Chat - Em Desenvolvimento");
+                new SelecionarConsultaChatGUI(usuario, gerenciador, "SENIOR").setVisible(true);
+                dispose();
             }
         });
 
