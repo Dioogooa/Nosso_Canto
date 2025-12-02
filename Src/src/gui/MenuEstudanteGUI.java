@@ -2,6 +2,7 @@ package gui;
 
 import entites.Estudante;
 import entites.Usuario;
+import dao.usuarioDAO;
 import services.GerenciadorUsuarios;
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +20,7 @@ public class MenuEstudanteGUI extends JFrame {
         configurarJanela();
     }
 
-    private void inicializarComponentes() { //testando com emojis esse haha (N FUNCIONA)
+    private void inicializarComponentes() {
         // Main panel
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
@@ -33,20 +34,34 @@ public class MenuEstudanteGUI extends JFrame {
         tituloLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         tituloLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
-        // Salve
+        // Saudação
         JLabel saudacaoLabel = new JLabel("Olá, " + usuario.getNome() + "!");
         saudacaoLabel.setFont(new Font("Calibri", Font.BOLD, 20));
         saudacaoLabel.setForeground(Color.DARK_GRAY);
         saudacaoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        saudacaoLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 30, 0));
+        saudacaoLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
-        // MenuPannel
+        // STATUS DE DISPONIBILIDADE (NOVO!)
+        JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        statusPanel.setBackground(Color.WHITE);
+
+        JLabel statusLabel = new JLabel("Status Atual:");
+        statusLabel.setFont(new Font("Calibri", Font.BOLD, 14));
+
+        JLabel disponibilidadeLabel = criarLabelDisponibilidade();
+
+        statusPanel.add(statusLabel);
+        statusPanel.add(disponibilidadeLabel);
+        statusPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        statusPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+
+        // MenuPanel
         JPanel menuPanel = new JPanel();
         menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
         menuPanel.setBackground(Color.WHITE);
         menuPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
 
-        // Botao
+        // Botões
         JButton buscarSeniorsBtn = criarBotaoMenu(" Buscar Seniors");
         JButton minhasConsultasBtn = criarBotaoMenu(" Minhas Consultas");
         JButton chatBtn = criarBotaoMenu(" Chat com Seniors");
@@ -55,7 +70,7 @@ public class MenuEstudanteGUI extends JFrame {
         JButton perfilBtn = criarBotaoMenu(" Ver Meu Perfil");
         JButton sairBtn = criarBotaoSair(" Sair da Conta");
 
-        // Adicionar botao + espaçamento
+        // Adicionar botão + espaçamento
         menuPanel.add(buscarSeniorsBtn);
         menuPanel.add(Box.createRigidArea(new Dimension(0, 12)));
         menuPanel.add(minhasConsultasBtn);
@@ -73,6 +88,7 @@ public class MenuEstudanteGUI extends JFrame {
         // Adicionar componentes ao main panel
         mainPanel.add(tituloLabel);
         mainPanel.add(saudacaoLabel);
+        mainPanel.add(statusPanel); // ADICIONADO AQUI!
         mainPanel.add(menuPanel);
 
         getContentPane().setBackground(Color.WHITE);
@@ -80,6 +96,33 @@ public class MenuEstudanteGUI extends JFrame {
 
         configurarAcoes(buscarSeniorsBtn, minhasConsultasBtn, chatBtn, especialidadesBtn,
                 disponibilidadeBtn, perfilBtn, sairBtn);
+    }
+
+    private JLabel criarLabelDisponibilidade() {
+        JLabel label = new JLabel();
+        label.setFont(new Font("Calibri", Font.BOLD, 14));
+        label.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.GRAY, 1),
+                BorderFactory.createEmptyBorder(5, 15, 5, 15)
+        ));
+
+        atualizarLabelDisponibilidade(label);
+
+        return label;
+    }
+
+    private void atualizarLabelDisponibilidade(JLabel label) {
+        if (usuario.isDisponivel()) {
+            label.setText("DISPONÍVEL");
+            label.setForeground(Color.WHITE);
+            label.setBackground(new Color(0, 150, 0)); // VERDE
+            label.setOpaque(true);
+        } else {
+            label.setText("INDISPONÍVEL");
+            label.setForeground(Color.WHITE);
+            label.setBackground(new Color(220, 53, 69)); // VERMELHO
+            label.setOpaque(true);
+        }
     }
 
     private JButton criarBotaoMenu(String texto) {
@@ -143,25 +186,46 @@ public class MenuEstudanteGUI extends JFrame {
         especialidadesBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(MenuEstudanteGUI.this,
-                        "Gerenciar Especialidades - Em desenvolvimento");
+                new GerenciarEspecialidadesGUI(usuario, gerenciador).setVisible(true);
+                dispose();
             }
         });
 
         disponibilidadeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Toggle disponibilidade
-                boolean novaDisponibilidade = !usuario.isDisponivel();
-                usuario.setDisponivel(novaDisponibilidade);
+                String statusAtual = usuario.isDisponivel() ? "DISPONÍVEL" : "INDISPONÍVEL";
+                String novoStatus = usuario.isDisponivel() ? "INDISPONÍVEL" : "DISPONÍVEL";
 
-                String status = novaDisponibilidade ? "DISPONÍVEL" : "INDISPONÍVEL";
-                JOptionPane.showMessageDialog(MenuEstudanteGUI.this,
-                        "Status atualizado: " + status + "\n\n" +
-                                "Agora você " + (novaDisponibilidade ? "aparecerá" : "NÃO aparecerá") +
-                                " nas buscas dos seniors.",
-                        "Disponibilidade Atualizada",
-                        JOptionPane.INFORMATION_MESSAGE);
+                int confirm = JOptionPane.showConfirmDialog(MenuEstudanteGUI.this,
+                        "Status atual: " + statusAtual + "\n\n" +
+                                "Deseja alterar para: " + novoStatus + "?\n\n" +
+                                "Isso afetará como os seniors te encontram nas buscas.",
+                        "Confirmar Alteração",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE);
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    boolean novaDisponibilidade = !usuario.isDisponivel();
+                    usuario.setDisponivel(novaDisponibilidade);
+
+                    try {
+                        usuarioDAO dao = new usuarioDAO();
+                        atualizarDisponibilidadeNoBD(usuario.getId(), novaDisponibilidade);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(MenuEstudanteGUI.this,
+                                "Erro ao salvar no banco de dados: " + ex.getMessage(),
+                                "Erro",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+
+                    atualizarDisplayDisponibilidade();
+
+                    JOptionPane.showMessageDialog(MenuEstudanteGUI.this,
+                            "Status atualizado para: " + (novaDisponibilidade ? "DISPONÍVEL" : "INDISPONÍVEL"),
+                            "Disponibilidade Atualizada",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
             }
         });
 
@@ -206,5 +270,32 @@ public class MenuEstudanteGUI extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
+    }
+
+    private void atualizarDisplayDisponibilidade() { //esse ficou braboooo
+        Component[] components = getContentPane().getComponents();
+        if (components.length > 0 && components[0] instanceof JPanel) {
+            JPanel mainPanel = (JPanel) components[0];
+            Component[] mainComponents = mainPanel.getComponents();
+
+            if (mainComponents.length > 2 && mainComponents[2] instanceof JPanel) {
+                JPanel statusPanel = (JPanel) mainComponents[2];
+
+                if (statusPanel.getComponentCount() > 1 && statusPanel.getComponent(1) instanceof JLabel) {
+                    JLabel disponibilidadeLabel = (JLabel) statusPanel.getComponent(1);
+                    atualizarLabelDisponibilidade(disponibilidadeLabel);
+                }
+            }
+        }
+    }
+
+    private void atualizarDisponibilidadeNoBD(String estudanteId, boolean disponivel) {
+        try {
+            usuarioDAO dao = new usuarioDAO();
+            dao.atualizarDisponibilidadeEstudante(estudanteId, disponivel);
+        } catch (Exception e) {
+            System.out.println("Erro ao atualizar disponibilidade no BD: " + e.getMessage());
+            throw e;
+        }
     }
 }
