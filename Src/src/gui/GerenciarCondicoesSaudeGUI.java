@@ -140,6 +140,18 @@ public class GerenciarCondicoesSaudeGUI extends JFrame {
 
         if (novaCondicao != null && !novaCondicao.trim().isEmpty()) {
             usuarioSenior.addCondicaoSaude(novaCondicao.trim());
+
+            try {
+                dao.usuarioDAO usuarioDAO = new dao.usuarioDAO();
+                usuarioDAO.atualizarCondicoesSaude(usuarioSenior);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,
+                        "Erro ao salvar no banco de dados: " + e.getMessage(),
+                                "Erro",
+                                JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             carregarCondicoes();
             JOptionPane.showMessageDialog(this,
                     "Condição de saúde adicionada com sucesso!",
@@ -160,7 +172,6 @@ public class GerenciarCondicoesSaudeGUI extends JFrame {
         }
 
         String condicaoAtual = listModel.getElementAt(selectedIndex);
-        condicaoAtual = condicaoAtual.substring(2);
 
         String novaCondicao = JOptionPane.showInputDialog(
                 this,
@@ -174,6 +185,17 @@ public class GerenciarCondicoesSaudeGUI extends JFrame {
 
         if (novaCondicao != null && !novaCondicao.trim().isEmpty()) {
             usuarioSenior.getCondicaoSaude().set(selectedIndex, novaCondicao.trim());
+            try {
+                dao.usuarioDAO usuarioDAO = new dao.usuarioDAO();
+                usuarioDAO.atualizarCondicoesSaude(usuarioSenior);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,
+                        "Erro ao salvar no banco de dados: " + e.getMessage(),
+                        "Erro",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             carregarCondicoes();
             JOptionPane.showMessageDialog(this,
                     "Condição de saúde editada com sucesso!",
@@ -202,6 +224,18 @@ public class GerenciarCondicoesSaudeGUI extends JFrame {
 
         if (confirm == JOptionPane.YES_OPTION) {
             usuarioSenior.getCondicaoSaude().remove(selectedIndex);
+
+            try {
+                dao.usuarioDAO usuarioDAO = new dao.usuarioDAO();
+                usuarioDAO.atualizarCondicoesSaude(usuarioSenior);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,
+                        "Erro ao salvar no banco de dados: " + e.getMessage(),
+                        "Erro",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             carregarCondicoes();
             JOptionPane.showMessageDialog(this,
                     "Condição de saúde removida com sucesso!",

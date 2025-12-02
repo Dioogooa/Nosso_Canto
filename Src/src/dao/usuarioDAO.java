@@ -483,4 +483,118 @@ public class usuarioDAO {
             throw new RuntimeException("Erro ao atualizar disponibilidade: " + e.getMessage(), e);
         }
     }
+
+    public void atualizarCondicoesSaude(Senior senior) { //deleta a antiga e coloca a nova no bd
+        Connection connection = null;
+        try {
+            connection = DataBaseConnection.getConnection();
+            connection.setAutoCommit(false);
+
+            String deleteSQL = "DELETE FROM condicoes_saude WHERE senior_id = ?";
+            try (PreparedStatement deleteStmt = connection.prepareStatement(deleteSQL)) {
+                deleteStmt.setString(1, senior.getId());
+                deleteStmt.executeUpdate();
+            }
+
+            salvarCondicoesSaude(connection, senior);
+
+            connection.commit();
+            System.out.println("Condições de saúde atualizadas para: " + senior.getNome());
+
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (SQLException ex) {
+                    System.out.println("Erro no rollback: " + ex.getMessage());
+                }
+            }
+            throw new RuntimeException("Erro ao atualizar condições de saúde: " + e.getMessage(), e);
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                } catch (SQLException e) {
+                    System.out.println("Erro ao fechar conexão: " + e.getMessage());
+                }
+            }
+        }
+    }
+
+    public void atualizarMedicamentos(Senior senior) {
+        Connection connection = null;
+        try {
+            connection = DataBaseConnection.getConnection();
+            connection.setAutoCommit(false);
+
+            String deleteSQL = "DELETE FROM medicamentos WHERE senior_id = ?";
+            try (PreparedStatement deleteStmt = connection.prepareStatement(deleteSQL)) {
+                deleteStmt.setString(1, senior.getId());
+                deleteStmt.executeUpdate();
+            }
+
+            salvarMedicamentos(connection, senior);
+
+            connection.commit();
+            System.out.println("Medicamentos atualizados para: " + senior.getNome());
+
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (SQLException ex) {
+                    System.out.println("Erro no rollback: " + ex.getMessage());
+                }
+            }
+            throw new RuntimeException("Erro ao atualizar medicamentos: " + e.getMessage(), e);
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                } catch (SQLException e) {
+                    System.out.println("Erro ao fechar conexão: " + e.getMessage());
+                }
+            }
+        }
+    }
+
+    public void atualizarEspecialidades(Estudante estudante) {
+        Connection connection = null;
+        try {
+            connection = DataBaseConnection.getConnection();
+            connection.setAutoCommit(false);
+
+            String deleteSQL = "DELETE FROM especialidades WHERE estudante_id = ?";
+            try (PreparedStatement deleteStmt = connection.prepareStatement(deleteSQL)) {
+                deleteStmt.setString(1, estudante.getId());
+                deleteStmt.executeUpdate();
+            }
+
+            salvarEspecialidades(connection, estudante);
+
+            connection.commit();
+            System.out.println("Especialidades atualizadas para: " + estudante.getNome());
+
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (SQLException ex) {
+                    System.out.println("Erro no rollback: " + ex.getMessage());
+                }
+            }
+            throw new RuntimeException("Erro ao atualizar especialidades: " + e.getMessage(), e);
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                } catch (SQLException e) {
+                    System.out.println("Erro ao fechar conexão: " + e.getMessage());
+                }
+            }
+        }
+    }
 }

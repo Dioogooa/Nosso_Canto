@@ -571,9 +571,6 @@ public class Main {
         limparTela();
     }
 
-    //public static LocalDateTime entradaAjustadaDataHora() {
-    //}
-
     public static void limparTela() {
         try {
             String os = System.getProperty("os.name").toLowerCase();
