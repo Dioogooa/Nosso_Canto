@@ -163,16 +163,16 @@ public class menuSeniorGUI extends JFrame{
         condiciesSaudeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(menuSeniorGUI.this,
-                        "Modificar Saude - Em Desenvolvimento");
+                new GerenciarCondicoesSaudeGUI(usuario, gerenciador).setVisible(true);
+                dispose();
             }
         });
 
         medicamentosButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(menuSeniorGUI.this,
-                        "Modificar Medicamentos - Em Desenvolvimento");
+                new GerenciarMedicamentosGUI(usuario, gerenciador).setVisible(true);
+                dispose();
             }
         });
 

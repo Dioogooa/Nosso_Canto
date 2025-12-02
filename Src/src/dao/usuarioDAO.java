@@ -465,4 +465,22 @@ public class usuarioDAO {
             System.out.println("Erro ao carregar dados do estudante: " + e.getMessage());
         }
     }
+
+    public void atualizarDisponibilidadeEstudante(String estudanteId, boolean disponivel) {
+        String sql = "UPDATE usuarios SET disponivel = ? WHERE id = ?";
+
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setBoolean(1, disponivel);
+            stmt.setString(2, estudanteId);
+
+            int rowsAffected = stmt.executeUpdate();
+            System.out.println("DEBUG - Disponibilidade atualizada para " + estudanteId +
+                    ": " + disponivel + " (linhas afetadas: " + rowsAffected + ")");
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao atualizar disponibilidade: " + e.getMessage(), e);
+        }
+    }
 }
