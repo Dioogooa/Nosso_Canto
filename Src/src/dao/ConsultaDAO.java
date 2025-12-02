@@ -116,7 +116,7 @@ public class ConsultaDAO {
     }
 
     private Consulta criarConsultasFromResultSet(ResultSet rs) throws SQLException {
-        // Usar dados já carregados do ResultSet, sem buscar novamente no banco
+        // Usa o dados salvo no Result set
         Senior senior = new Senior(
                 rs.getString("senior_id"),
                 rs.getString("senior_nome"),

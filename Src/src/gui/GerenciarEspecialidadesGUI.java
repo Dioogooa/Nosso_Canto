@@ -1,6 +1,7 @@
 package gui;
 
 import entites.Estudante;
+import dao.usuarioDAO;
 import services.GerenciadorUsuarios;
 import javax.swing.*;
 import java.awt.*;
@@ -141,6 +142,18 @@ public class GerenciarEspecialidadesGUI extends JFrame {
 
         if (novaEspecialidade != null && !novaEspecialidade.trim().isEmpty()) {
             usuarioEstudante.adcEspecialidade(novaEspecialidade.trim());
+
+            try {
+                usuarioDAO dao = new usuarioDAO();
+                dao.atualizarEspecialidades(usuarioEstudante);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,
+                        "Erro ao salvar no banco: " + e.getMessage(),
+                        "Erro",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             carregarEspecialidades();
             JOptionPane.showMessageDialog(this,
                     "Especialidade adicionada com sucesso!",
@@ -161,7 +174,6 @@ public class GerenciarEspecialidadesGUI extends JFrame {
         }
 
         String especialidadeAtual = listModel.getElementAt(selectedIndex);
-            especialidadeAtual = especialidadeAtual.substring(2);
 
         String novaEspecialidade = JOptionPane.showInputDialog(
                 this,
@@ -175,6 +187,18 @@ public class GerenciarEspecialidadesGUI extends JFrame {
 
         if (novaEspecialidade != null && !novaEspecialidade.trim().isEmpty()) {
             usuarioEstudante.getEspecialidades().set(selectedIndex, novaEspecialidade.trim());
+
+            try {
+                usuarioDAO dao = new usuarioDAO();
+                dao.atualizarEspecialidades(usuarioEstudante);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,
+                        "Erro ao salvar no banco: " + e.getMessage(),
+                        "Erro",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             carregarEspecialidades();
             JOptionPane.showMessageDialog(this,
                     "Especialidade editada com sucesso!",
@@ -203,6 +227,18 @@ public class GerenciarEspecialidadesGUI extends JFrame {
 
         if (confirm == JOptionPane.YES_OPTION) {
             usuarioEstudante.getEspecialidades().remove(selectedIndex);
+
+            try {
+                usuarioDAO dao = new usuarioDAO();
+                dao.atualizarEspecialidades(usuarioEstudante);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,
+                        "Erro ao salvar no banco: " + e.getMessage(),
+                        "Erro",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             carregarEspecialidades();
             JOptionPane.showMessageDialog(this,
                     "Especialidade removida com sucesso!",

@@ -145,6 +145,18 @@ public class GerenciarMedicamentosGUI extends JFrame {
 
         if (novoMedicamento != null && !novoMedicamento.trim().isEmpty()) {
             usuarioSenior.addMedicamento(novoMedicamento.trim());
+
+            try {
+                dao.usuarioDAO usuarioDAO = new dao.usuarioDAO();
+                usuarioDAO.atualizarMedicamentos(usuarioSenior);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,
+                        "Erro ao salvar no banco de dados: " + e.getMessage(),
+                        "Erro",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             carregarMedicamentos();
             JOptionPane.showMessageDialog(this,
                     "Medicamento adicionado com sucesso!",
@@ -164,10 +176,7 @@ public class GerenciarMedicamentosGUI extends JFrame {
             return;
         }
 
-        // Remover o emoji se tiver
         String medicamentoAtual = listModel.getElementAt(selectedIndex);
-            medicamentoAtual = medicamentoAtual.substring(2);
-
 
         String novoMedicamento = JOptionPane.showInputDialog(
                 this,
@@ -181,6 +190,18 @@ public class GerenciarMedicamentosGUI extends JFrame {
 
         if (novoMedicamento != null && !novoMedicamento.trim().isEmpty()) {
             usuarioSenior.getMedicamentos().set(selectedIndex, novoMedicamento.trim());
+
+            try {
+                dao.usuarioDAO usuarioDAO = new dao.usuarioDAO();
+                usuarioDAO.atualizarMedicamentos(usuarioSenior);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,
+                        "Erro ao salvar no banco de dados: " + e.getMessage(),
+                        "Erro",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             carregarMedicamentos();
             JOptionPane.showMessageDialog(this,
                     "Medicamento editado com sucesso!",
@@ -209,6 +230,18 @@ public class GerenciarMedicamentosGUI extends JFrame {
 
         if (confirm == JOptionPane.YES_OPTION) {
             usuarioSenior.getMedicamentos().remove(selectedIndex);
+
+            try {
+                dao.usuarioDAO usuarioDAO = new dao.usuarioDAO();
+                usuarioDAO.atualizarMedicamentos(usuarioSenior);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,
+                        "Erro ao salvar no banco de dados: " + e.getMessage(),
+                        "Erro",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             carregarMedicamentos();
             JOptionPane.showMessageDialog(this,
                     "Medicamento removido com sucesso!",
