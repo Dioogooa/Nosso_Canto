@@ -24,12 +24,12 @@ public class GerenciarCondicoesSaudeGUI extends JFrame {
     }
 
     private void inicializarComponentes() {
-        // MESMO LAYOUT SIMPLES
+        // Main panel
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         mainPanel.setBackground(Color.WHITE);
 
-        // 1. CABEÇALHO
+        // CABEÇALHO
         JPanel headerPanel = new JPanel();
         headerPanel.setBackground(Color.WHITE);
         headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
@@ -49,7 +49,7 @@ public class GerenciarCondicoesSaudeGUI extends JFrame {
         headerPanel.add(subtitulo);
         headerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
-        // 2. LISTA
+        // LISTA
         listModel = new DefaultListModel<>();
         condicoesList = new JList<>(listModel);
         condicoesList.setFont(new Font("Calibri", Font.PLAIN, 14));
@@ -60,7 +60,7 @@ public class GerenciarCondicoesSaudeGUI extends JFrame {
         scrollPane.setBorder(BorderFactory.createTitledBorder("Lista de Condições de Saúde"));
         scrollPane.setPreferredSize(new Dimension(400, 200));
 
-        // 3. BOTÕES DE AÇÃO - VISÍVEIS
+        // BOTÕES DE AÇÃO
         JPanel botoesPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
         botoesPanel.setBackground(Color.WHITE);
         botoesPanel.setBorder(BorderFactory.createTitledBorder("Ações"));
@@ -73,7 +73,7 @@ public class GerenciarCondicoesSaudeGUI extends JFrame {
         botoesPanel.add(btnEditar);
         botoesPanel.add(btnRemover);
 
-        // 4. BOTÃO VOLTAR
+        //BOTÃO VOLTAR
         JPanel footerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         footerPanel.setBackground(Color.WHITE);
 
@@ -87,7 +87,6 @@ public class GerenciarCondicoesSaudeGUI extends JFrame {
 
         footerPanel.add(btnVoltar);
 
-        // 5. MONTAR
         mainPanel.add(headerPanel, BorderLayout.NORTH);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
 

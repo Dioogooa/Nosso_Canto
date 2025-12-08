@@ -63,7 +63,7 @@ public class GerenciadorUsuarios {
             return usuarioMemoria;
         }
 
-        //Caso o usuario nÃ£o esteja na memoria, tenta no banco!
+        //Caso o usuario nao esteja na memoria, tenta no banco!
         try {
             Optional<Usuario> usuarioBanco = usuarioDAO.buscarPorEmail(email);
             if (usuarioBanco.isPresent() && usuarioBanco.get().getSenha().equals(senha)) {
@@ -85,7 +85,6 @@ public class GerenciadorUsuarios {
                 .map(u -> (Senior) u)
                 .toList();
 
-        // Carregar dados relacionados para cada senior
         for (Senior senior : seniores) {
             try {
                 usuarioDAO.carregarCondicoesSaude(senior);
@@ -104,7 +103,6 @@ public class GerenciadorUsuarios {
                 .map(u -> (Estudante) u)
                 .toList();
 
-        // Carregar dados relacionados (especialidades) para cada estudante
         for (Estudante estudante : estudantes) {
             try {
                 usuarioDAO.carregarEspecialidades(estudante);

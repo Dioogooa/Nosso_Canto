@@ -175,7 +175,7 @@ public class BuscarEstudantesGUI extends JFrame {
 
         buttonPanel.add(verPerfilButton);
 
-        // Também permite clicar no card inteiro
+        // Também permite clicar no card inteiro!
         cardPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 abrirPerfilEstudante(estudante);

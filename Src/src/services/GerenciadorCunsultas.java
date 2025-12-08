@@ -33,7 +33,7 @@ public class GerenciadorCunsultas {
         return consultaDAO.listarSeniores(seniorId);
         //return consultas.stream()
         //        .filter(c -> c.getSenior().getId().equals(seniorId))
-        //        .toList();
+        //        .toList(); -- tava salvando na memoria
     }
 
     public List<Consulta> getConsultarEstudante(String estudanteId) {

@@ -142,6 +142,7 @@ public class usuarioDAO {
                 stmt.addBatch();
             }
             stmt.executeBatch();
+
         } catch ( SQLException e) {
             System.out.println("Erro ao salvar especialidades!" + e.getMessage());
         }
@@ -211,6 +212,7 @@ public class usuarioDAO {
             carregarMedicamentos(senior);
 
             return senior;
+
         } else if ("ESTUDANTE".equals(tipo)) {
             // Tratar campos que podem ser null para Estudante ---
             String instituicao = rs.getString("instituicao");
@@ -234,6 +236,7 @@ public class usuarioDAO {
                     ", Semestre: " + estudante.getSemestre());
 
             return estudante;
+
         } else {
             System.out.println("Tipo de usuário desconhecido: " + tipo);
             return null;
@@ -301,7 +304,7 @@ public class usuarioDAO {
              PreparedStatement stmt = connection.prepareStatement("SELECT * FROM usuarios");
              ResultSet rs = stmt.executeQuery()) {
 
-            System.out.println("=== DEBUG listarTodosUsuarios ===");
+            System.out.println("=== debug listar todos usuarios ===");
 
             while (rs.next()) {
                 String id = rs.getString("id");
@@ -312,6 +315,7 @@ public class usuarioDAO {
 
                 java.sql.Date dataNascSql = rs.getDate("data_nascimento");
                 LocalDate dataNascimento = (dataNascSql != null) ? dataNascSql.toLocalDate() : null;
+                //Converti sql date para LocalDate e verifiquei posibilidade de nulos
 
                 String cpf = rs.getString("cpf");
                 String endereco = rs.getString("endereco");
@@ -332,7 +336,7 @@ public class usuarioDAO {
                     int semestre = rs.getInt("semestre");
                     boolean disponivel = rs.getBoolean("disponivel");
 
-                    // Se semestre for 0 (NULL no banco), usar 1 como default
+
                     if (semestre == 0) semestre = 1;
 
                     Estudante estudante = new Estudante(id, nome, email, "", telefone, dataNascimento, cpf, endereco,
@@ -394,10 +398,13 @@ public class usuarioDAO {
         if (usuario instanceof Senior) {
             carregarCondicoesSaude((Senior) usuario);
             carregarMedicamentos((Senior) usuario);
+
             // Também carrega dados básicos do senior
             carregarDadosSenior((Senior) usuario);
+
         } else if (usuario instanceof Estudante) {
             carregarEspecialidades((Estudante) usuario);
+
             // Também carrega dados básicos do estudante
             carregarDadosEstudante((Estudante) usuario);
         }

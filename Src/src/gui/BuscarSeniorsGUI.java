@@ -175,7 +175,7 @@ public class BuscarSeniorsGUI extends JFrame {
 
         buttonPanel.add(verPerfilButton);
 
-        // Também permite clicar no card inteiro
+        // Card! para clique
         cardPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 abrirPerfilSenior(senior);

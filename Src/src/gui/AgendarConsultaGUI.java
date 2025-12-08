@@ -21,7 +21,7 @@ public class AgendarConsultaGUI extends JFrame {
     private GerenciadorUsuarios gerenciadorUsuarios;
     private GerenciadorCunsultas gerenciadorConsultas;
 
-    // Componentes para seleção de data/hora
+    // componentes p seleção de data/hora
     private JComboBox<Integer> diaCombo, mesCombo, anoCombo;
     private JComboBox<String> horaCombo, minutoCombo;
     private JTextArea descricaoArea;
@@ -36,7 +36,7 @@ public class AgendarConsultaGUI extends JFrame {
         configurarJanela();
     }
 
-    // Construtor alternativo para quando vem direto do menu (sem estudante selecionado)
+    // Construtor alternativo - quando vier direto do menu Agendar Consulta
     public AgendarConsultaGUI(Senior senior, GerenciadorUsuarios gerenciador) {
         this.usuarioSenior = senior;
         this.gerenciadorUsuarios = gerenciador;
@@ -76,7 +76,7 @@ public class AgendarConsultaGUI extends JFrame {
             formularioPanel.add(criarSelecaoEstudante());
             formularioPanel.add(Box.createRigidArea(new Dimension(0, 15)));
         } else {
-            // Mostrar estudante selecionado
+            // Mostrar estudante selecionado!!
             JPanel estudantePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
             estudantePanel.setBackground(Color.WHITE);
 
@@ -175,7 +175,6 @@ public class AgendarConsultaGUI extends JFrame {
             anoCombo.addItem(i);
         }
 
-        // Configurar data atual como padrão
         LocalDate hoje = LocalDate.now();
         diaCombo.setSelectedItem(hoje.getDayOfMonth());
         mesCombo.setSelectedItem(hoje.getMonthValue());
@@ -198,7 +197,7 @@ public class AgendarConsultaGUI extends JFrame {
         panel.setBackground(Color.WHITE);
         panel.setBorder(BorderFactory.createTitledBorder("Horário da Consulta"));
 
-        // Horários das 7:00 às 18:30, de 30 em 30 minutos
+        // Horários das 7:00 às 18:30, opções de 30 em 30 minutos
         horaCombo = new JComboBox<>();
         minutoCombo = new JComboBox<>();
 
@@ -303,7 +302,6 @@ public class AgendarConsultaGUI extends JFrame {
 
             LocalDateTime dataHora = LocalDateTime.of(data, horario);
 
-            // Validar descrição
             String descricao = descricaoArea.getText().trim();
             if (descricao.isEmpty()) {
                 JOptionPane.showMessageDialog(this,
@@ -313,16 +311,11 @@ public class AgendarConsultaGUI extends JFrame {
                 return;
             }
 
-            // Gerar ID único para a consulta
             String consultaId = "C" + System.currentTimeMillis();
 
-            // Criar e salvar consulta
             Consulta consulta = gerenciadorConsultas.agendarConsulta(
                     consultaId, usuarioSenior, estudante, dataHora, descricao
             );
-
-            // Aqui você pode salvar no banco também
-            // new ConsultaDAO().salvar(consulta);
 
             JOptionPane.showMessageDialog(this,
                     "Consulta agendada com sucesso!\n\n" +
