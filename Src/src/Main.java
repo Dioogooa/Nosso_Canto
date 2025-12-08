@@ -74,7 +74,7 @@ public class Main {
         }
     }
 
-    private static void exibirMenuSenior() {
+    private static void exibirMenuSenior() { //menu terminal
         System.out.println("\n=== MENU SENIOR ===");
         System.out.println("1. Buscar estudante");
         System.out.println("2. Agendar Consulta");
@@ -105,7 +105,7 @@ public class Main {
         }
     }
 
-    public static void exibirMenuEstudante() {
+    public static void exibirMenuEstudante() { //menu terminal
         System.out.println("\n=== MENU ESTUDANTE ===");
         System.out.println("1. Buscar Seniors");
         System.out.println("2. Minhas consultas");
@@ -197,8 +197,6 @@ public class Main {
 
         gerenciadorUsuarios.cadastrarUsuario(senior);
         System.out.println("Senior cadastrado com sucesso!");
-
-        //ADICIONAR REMEDIOS E CONDIÇÃO DE SAÚDE COMO METODO NO MENU SENIOR, AQUI NO CADASTRO NÃO!!!!!! ----- LEMBRAR!!
     }
 
     public static void cadastrarEstudante() { //fazer aqui, precisa cadastrar infos além de email e senha
@@ -277,12 +275,12 @@ public class Main {
         } else {
             seniors.forEach(Senior::exibirPerfil);
         }
-    } //
+    }
 
     private static void gerenciarCondicoesSaude() {
         Senior senior = (Senior) usuarioIsLogado;
 
-        System.out.println("\n=== GERENCIAR CONDIÇÕES DE SAÚDE ==="); //aqui teria que ser um vetor..
+        System.out.println("\n=== GERENCIAR CONDIÇÕES DE SAÚDE ===");
         System.out.println("Suas condições atuais: "+senior.getCondicaoSaude());
 
         System.out.println("1. Adicionar condição");
@@ -316,7 +314,7 @@ public class Main {
     private static void gerenciarMedicamentos() {
         Senior senior = (Senior) usuarioIsLogado;
 
-        System.out.println("\n=== GERENCIAR MEDICAMENTOS ==="); //aqui teria que ser um vetor..
+        System.out.println("\n=== GERENCIAR MEDICAMENTOS ===");
         System.out.println("Suas condições atuais: "+senior.getMedicamentos());
 
         System.out.println("1. Adicionar Medicamento");
@@ -506,7 +504,7 @@ public class Main {
 
         Estudante estudante = (Estudante) estudanteOpt.get();
         iniciarChat(estudante, " Estudante");
-    } //precisa de mudanças (seus devidos chats no devidos menus)
+    }
 
     private static void chatComSeniors() {
 
@@ -571,7 +569,7 @@ public class Main {
         limparTela();
     }
 
-    public static void limparTela() {
+    public static void limparTela() { //limpar tela (terminal)
         try {
             String os = System.getProperty("os.name").toLowerCase();
 

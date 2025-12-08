@@ -24,12 +24,12 @@ public class GerenciarMedicamentosGUI extends JFrame {
     }
 
     private void inicializarComponentes() {
-        // USAR LAYOUT SIMPLES E GARANTIDO: BorderLayout
+        // Main Panel
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         mainPanel.setBackground(Color.WHITE);
 
-        // 1. CABEÇALHO (NORTE)
+        //CABEÇALHO
         JPanel headerPanel = new JPanel();
         headerPanel.setBackground(Color.WHITE);
         headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
@@ -49,7 +49,7 @@ public class GerenciarMedicamentosGUI extends JFrame {
         headerPanel.add(subtitulo);
         headerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
-        // 2. LISTA DE MEDICAMENTOS (CENTRO) - COM TAMANHO FIXO
+        // LISTA
         listModel = new DefaultListModel<>();
         medicamentosList = new JList<>(listModel);
         medicamentosList.setFont(new Font("Calibri", Font.PLAIN, 14));
@@ -60,12 +60,12 @@ public class GerenciarMedicamentosGUI extends JFrame {
         scrollPane.setBorder(BorderFactory.createTitledBorder("Lista de Medicamentos"));
         scrollPane.setPreferredSize(new Dimension(400, 200)); // TAMANHO FIXO
 
-        // 3. BOTÕES DE AÇÃO (SUL) - USANDO FlowLayout SIMPLES
+        //BOTÕES DE AÇÃO
         JPanel botoesPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
         botoesPanel.setBackground(Color.WHITE);
         botoesPanel.setBorder(BorderFactory.createTitledBorder("Ações"));
 
-        // BOTÕES COM TAMANHO FIXO E VISÍVEIS
+        // BOTÕES COM TAMANHO FIXO
         JButton btnAdicionar = criarBotaoVisivel("ADICIONAR", new Color(0, 150, 0));
         JButton btnEditar = criarBotaoVisivel("EDITAR", new Color(0, 102, 204));
         JButton btnRemover = criarBotaoVisivel("REMOVER", new Color(220, 53, 69));
@@ -74,7 +74,7 @@ public class GerenciarMedicamentosGUI extends JFrame {
         botoesPanel.add(btnEditar);
         botoesPanel.add(btnRemover);
 
-        // 4. BOTÃO VOLTAR (SUL - ABAIXO)
+        // BOTÃO VOLTAR
         JPanel footerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         footerPanel.setBackground(Color.WHITE);
 
@@ -88,7 +88,6 @@ public class GerenciarMedicamentosGUI extends JFrame {
 
         footerPanel.add(btnVoltar);
 
-        // 5. MONTAR TUDO - LAYOUT SIMPLES
         mainPanel.add(headerPanel, BorderLayout.NORTH);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
 

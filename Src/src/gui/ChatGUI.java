@@ -32,7 +32,6 @@ public class ChatGUI extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // USAR O MESMO LAYOUT QUE FUNCIONA
         criarInterfaceQueFunciona();
         carregarMensagens();
 
@@ -40,12 +39,12 @@ public class ChatGUI extends JFrame {
     }
 
     private void criarInterfaceQueFunciona() {
-        // 1. PAINEL PRINCIPAL COM BORDERLAYOUT (para organização)
+        // Main panel
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         mainPanel.setBackground(Color.WHITE);
 
-        // 2. CABEÇALHO (Norte)
+        // CABEÇALHO (Cima)
         JPanel headerPanel = new JPanel();
         headerPanel.setBackground(new Color(0, 102, 204));
         headerPanel.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
@@ -55,7 +54,7 @@ public class ChatGUI extends JFrame {
         titulo.setFont(new Font("Calibri", Font.BOLD, 16));
         headerPanel.add(titulo);
 
-        // 3. ÁREA DO CHAT (Centro) - MANTENDO A LÓGICA QUE FUNCIONA
+        // ÁREA DO CHAT (Centro)
         chatArea = new JTextArea(15, 40);
         chatArea.setEditable(false);
         chatArea.setFont(new Font("Segoe UI", Font.PLAIN, 14));
@@ -66,7 +65,7 @@ public class ChatGUI extends JFrame {
         JScrollPane chatScroll = new JScrollPane(chatArea);
         chatScroll.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
 
-        // 4. ÁREA DE ENVIO (Sul) - MANTENDO A ESTRUTURA QUE FUNCIONA
+        //ÁREA DE ENVIO (parte de baixo)
         JPanel inputPanel = new JPanel(new BorderLayout(10, 0));
         inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         inputPanel.setBackground(Color.WHITE);
@@ -96,7 +95,7 @@ public class ChatGUI extends JFrame {
         enviarButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         enviarButton.setPreferredSize(new Dimension(100, 40)); // TAMANHO FIXO
 
-        // GARANTIR que o botão está visível
+        // GARANTIR que o botão está visível (estava sumindo)
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.setBackground(Color.WHITE);
         buttonPanel.add(enviarButton);
@@ -104,7 +103,7 @@ public class ChatGUI extends JFrame {
         inputPanel.add(mensagemField, BorderLayout.CENTER);
         inputPanel.add(buttonPanel, BorderLayout.EAST);
 
-        // 5. BOTÃO VOLTAR (Sul também)
+        // BOTÃO VOLTAR (Parte de  baixo)
         JButton voltarButton = new JButton("Voltar");
         voltarButton.setFont(new Font("Calibri", Font.PLAIN, 12));
         voltarButton.setBackground(new Color(240, 240, 240));
@@ -114,11 +113,10 @@ public class ChatGUI extends JFrame {
         footerPanel.setBackground(Color.WHITE);
         footerPanel.add(voltarButton);
 
-        // 6. MONTAR TUDO (MESMA LÓGICA QUE FUNCIONA)
         mainPanel.add(headerPanel, BorderLayout.NORTH);
         mainPanel.add(chatScroll, BorderLayout.CENTER);
 
-        // Painel combinado para input + footer
+        // Painel combinado para input + footer (famoso rodapé)
         JPanel southPanel = new JPanel(new BorderLayout());
         southPanel.add(inputPanel, BorderLayout.CENTER);
         southPanel.add(footerPanel, BorderLayout.SOUTH);
@@ -126,10 +124,8 @@ public class ChatGUI extends JFrame {
 
         add(mainPanel);
 
-        // AÇÃO DO BOTÃO (MESMA LÓGICA QUE FUNCIONA)
-        enviarButton.addActionListener(e -> enviarMensagem());
-
-        // FOCO
+        enviarButton.addActionListener(e -> enviarMensagem()); //--> jeito de envio que funcionou antes
+        //request focus
         SwingUtilities.invokeLater(() -> {
             mensagemField.requestFocusInWindow();
             System.out.println("DEBUG: Interface carregada - botão visível? " + enviarButton.isVisible());

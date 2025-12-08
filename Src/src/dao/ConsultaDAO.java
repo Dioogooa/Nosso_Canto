@@ -51,12 +51,12 @@ public class ConsultaDAO {
             stmt.setString(1, seniorId);
             ResultSet rs = stmt.executeQuery();
 
-            System.out.println("DEBUG - Buscando consultas para senior: " + seniorId);
+            System.out.println("Buscando consultas para o senior: " + seniorId);
 
             int count = 0;
             while (rs.next()) {
                 count++;
-                System.out.println("DEBUG - Consulta encontrada #" + count + ":");
+                System.out.println("Consulta encontrada #" + count + ":");
                 System.out.println("  ID: " + rs.getString("id"));
                 System.out.println("  Estudante: " + rs.getString("estudante_nome"));
                 System.out.println("  Status: " + rs.getString("status"));
@@ -65,7 +65,7 @@ public class ConsultaDAO {
                 consultas.add(criarConsultasFromResultSet(rs));
             }
 
-            System.out.println("DEBUG - Total de consultas encontradas para senior: " + count);
+            System.out.println("Total de consultas encontradas para senior: " + count);
 
         } catch (Exception e) {
             System.out.println("Erro no listarSeniores: " + e.getMessage());
@@ -91,7 +91,7 @@ public class ConsultaDAO {
             stmt.setString(1, estudanteId);
             ResultSet rs = stmt.executeQuery();
 
-            System.out.println("DEBUG - Buscando consultas para estudante: " + estudanteId);
+            System.out.println("Buscando consultas para estudante: " + estudanteId);
 
             int count = 0;
             while (rs.next()) {
@@ -106,7 +106,7 @@ public class ConsultaDAO {
                 consultas.add(criarConsultasFromResultSet(rs));
             }
 
-            System.out.println("DEBUG - Total de consultas encontradas: " + count);
+            System.out.println("Total de consultas encontradas: " + count);
 
         } catch (Exception e) {
             throw new RuntimeException("Erro ao listar consultas de estudante", e);
@@ -151,7 +151,7 @@ public class ConsultaDAO {
             stmt.setString(2, consultaId);
 
             int linhaAfetadasDAO = stmt.executeUpdate();
-            System.out.println("DEBUG - Status atualizado para: " + novoStatus +
+            System.out.println("Status atualizado para: " + novoStatus +
                     " - Linhas afetadas: " + linhaAfetadasDAO);
 
         } catch (Exception e) {

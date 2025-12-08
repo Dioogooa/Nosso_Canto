@@ -307,7 +307,7 @@ public class CadastroEstudanteGUI extends JFrame {
         setResizable(true);
     }
 
-    private ImageIcon carregarImagem(String caminho) {
+    private ImageIcon carregarImagem(String caminho) { //metodo para carregar a logo!
         try {
             java.net.URL imgURL = getClass().getResource(caminho);
 

@@ -345,7 +345,7 @@ public class CadastroSeniorGUI extends JFrame {
     }
 
     private ImageIcon criarIconeVazio(int largura, int altura) {
-        // Cria um ícone vazio para evitar NullPointerException
+        // Cria um ícone vazio para evitar NullPointerException (erro)
         java.awt.Image imagemVazia = new java.awt.image.BufferedImage(largura, altura, java.awt.image.BufferedImage.TYPE_INT_ARGB);
         return new ImageIcon(imagemVazia);
     }
